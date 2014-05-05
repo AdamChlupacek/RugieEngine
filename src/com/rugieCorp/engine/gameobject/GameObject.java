@@ -2,14 +2,10 @@ package com.rugieCorp.engine.gameobject;
 
 import com.rugieCorp.engine.error.RugieError;
 import com.rugieCorp.engine.gameobject.component.GameComponent;
-import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * User: Adam Chlupacek
@@ -92,7 +88,7 @@ public class GameObject {
 
     public void updateDeps(){
         for (GameComponent component:components){
-            component.updateDep();
+            component.init();
         }
     }
 
@@ -111,8 +107,8 @@ public class GameObject {
         return children;
     }
 
-    public Vector2f getPosition() {
-        return transform.getPosition();
+    public Vector3f getPosition() {
+        return transform.getPos();
     }
 
     public GameComponent getComponent(String key){
@@ -132,24 +128,28 @@ public class GameObject {
         return false;
     }
 
-    public void setPosition(Vector2f position) {
-        this.transform.setPosition(position);
+    public void setPosition(Vector3f position) {
+        this.transform.setPos(position);
     }
 
-    public Vector2f getSize(){
-        return transform.getSize();
+    public Vector3f getScale(){
+        return transform.getScale();
     }
 
-    public void setSize(Vector2f size){
-        this.transform.setSize(size);
+    public void setScale(Vector3f size){
+        this.transform.setScale(size);
         onSizeChange();
     }
 
-    public void setSize(int sx, int sy){
-        setSize(new Vector2f(sx,sy));
+    public void setScale(int sx, int sy){
+        setScale(new Vector3f(sx, sy, 0));
     }
 
     public String getId() {
         return id;
+    }
+
+    public Transform getTransform() {
+        return transform;
     }
 }

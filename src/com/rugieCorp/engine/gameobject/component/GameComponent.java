@@ -17,7 +17,7 @@ public class GameComponent {
     public void update(){}
     public void render(){}
 
-    public void updateDep(){}
+    public void init(){}
 
     public GameComponent(String name) {
         this.name = name;

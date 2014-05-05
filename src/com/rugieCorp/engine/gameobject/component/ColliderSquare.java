@@ -5,9 +5,6 @@ import com.rugieCorp.engine.error.RugieError;
 import com.rugieCorp.engine.gameobject.GameObject;
 import com.rugieCorp.engine.level.Level;
 import com.rugieCorp.engine.level.tile.Tile;
-import com.rugieCorp.engine.util.dt.Vector2f;
-import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
-import org.lwjgl.Sys;
 
 /**
  * User: Adam Chlupacek
@@ -29,15 +26,15 @@ public class ColliderSquare extends GameComponent implements Collider {
     }
 
     @Override
-    public void updateDep(){
+    public void init(){
         for (GameObject go:Engine.getScreen().getRoot().getChildren()){
             if (go.hasComponent("level")){
                 level = (Level)go.getComponent("level");
             }
         }
 
-        sy = parent.getSize().getY();
-        sx = parent.getSize().getX();
+        sy = parent.getScale().getY();
+        sx = parent.getScale().getX();
     }
 
     @Override
@@ -90,7 +87,7 @@ public class ColliderSquare extends GameComponent implements Collider {
             }
         }
 
-        if (!collides)
+        if (!collides && level != null)
             collides = levelCollide();
 
 

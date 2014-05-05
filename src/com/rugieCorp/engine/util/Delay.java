@@ -33,4 +33,8 @@ public class Delay {
     public void stop(){
         start = -1;
     }
+
+    public boolean isStarted(){
+        return start != -1;
+    }
 }

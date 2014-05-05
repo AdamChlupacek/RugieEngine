@@ -1,14 +1,16 @@
 package com.rugieCorp.engine.level.tile;
 
+import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.graphics.Color;
-import com.rugieCorp.engine.graphics.render.Square;
-import com.rugieCorp.engine.util.ResourceLoader;
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Mesh;
+import com.rugieCorp.engine.graphics.Vertex;
+import com.rugieCorp.engine.graphics.shader.BasicShader;
+import com.rugieCorp.engine.graphics.shader.Shader;
+import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * User: Adam Chlupacek
@@ -19,43 +21,56 @@ import static org.lwjgl.opengl.GL11.*;
 public class Tile {
 
     public static final int SIZE = 64;
-    private static Texture texture = ResourceLoader.loadTexture("tiles");
-
+//    private static Texture texture = ResourceLoader.loadTexture("tiles");
 
     public static Map<Integer, Tile> tiles = new HashMap<Integer, Tile>();
 
     public static Tile tileA = new Tile(Color.BLACK,"TILEA",true,1,0);
     public static Tile tileB = new Tile(Color.GREEN,"TILEB",false,0,1);
 
-
+    private static Mesh mesh;
+    private static Shader shader = BasicShader.getInstance();
 
     private Color color;
     private String name;
-    private Square square;
-
     private boolean solid;
 
-    public Tile(Color color, String name,boolean solid, int textureX, int textureY) {
+    private Vector2f texPos;
+
+    public Tile(Color color, String name,boolean solid, float texX, float texY) {
         this.color = color;
         this.name = name;
         this.solid = solid;
-
-
-        this.square = new Square(SIZE,SIZE);
-        this.square.setTexture(texture, (float)textureX * (float)SIZE/512, (float)textureY * (float)SIZE/512, (float)SIZE/512, (float)SIZE/512);
-
+        this.texPos = new Vector2f(texX,texY);
         tiles.put(color.getColor(),this);
+
+        //TODO: Change it to make this basic square mesh stored somewhere
+
+        Vertex[] vertexes = new Vertex[]{
+                new Vertex(new Vector3f(0,0,0),new Vector2f(0,1)),
+                new Vertex(new Vector3f(1,0,0),new Vector2f(1,1)),
+                new Vertex(new Vector3f(1,1,0),new Vector2f(1,0)),
+                new Vertex(new Vector3f(0,1,0),new Vector2f(0,0))
+        };
+
+        int[] indices = new int[]{
+                0,1,2,
+                2,3,0
+        };
+
+        mesh = new Mesh(vertexes,indices);
     }
 
 
 
 
-    public void render(){
-        glPushMatrix();
-        {
-            square.render();
-        }
-        glPopMatrix();
+    public void render(Transform transform){
+
+        mesh.draw();
+    }
+
+    public Vector2f getTexPos(){
+        return texPos;
     }
 
     public Color getColor() {

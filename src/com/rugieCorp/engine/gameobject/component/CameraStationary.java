@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.gameobject.component;
 
+import com.rugieCorp.engine.util.dt.Matrix4f;
 import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 /**
  * User: Adam Chlupacek
@@ -10,12 +12,32 @@ import com.rugieCorp.engine.util.dt.Vector2f;
  */
 public class CameraStationary extends GameComponent implements Camera {
 
-    private Vector2f offset;
+    private Vector3f pos;
+    private Vector3f forward;
+    private Vector3f up;
 
-    public CameraStationary() {
+    private Matrix4f projection;
+
+    public CameraStationary(float left, float right, float bottom, float top, float near, float far) {
         super("camera");
+        this.pos = new Vector3f(0,0,0);
+        this.forward = new Vector3f(0,0,1).normalize();
+        this.up = new Vector3f(0,1,0).normalize();
 
-        offset = new Vector2f(0,0);
+        projection = new Matrix4f().initOrthographic(left, right, bottom, top, near, far);
+    }
+
+    @Override
+    public Matrix4f getViewProjection(){
+        Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+        Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+
+        return projection.mul(cameraRotation.mul(cameraTranslation));
+    }
+
+    @Override
+    public boolean changed() {
+        return false;
     }
 
     @Override
@@ -23,11 +45,12 @@ public class CameraStationary extends GameComponent implements Camera {
 
     @Override
     public float getOffsetX() {
-        return offset.getX();
+        return pos.getX();
     }
 
     @Override
     public float getOffsetY() {
-        return offset.getY();
+        return pos.getY();
     }
+
 }

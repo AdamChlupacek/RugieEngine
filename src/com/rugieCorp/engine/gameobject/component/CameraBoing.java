@@ -1,9 +1,8 @@
 package com.rugieCorp.engine.gameobject.component;
 
-import com.rugieCorp.engine.Engine;
-import com.rugieCorp.engine.graphics.GUI.GUILabel;
-import com.rugieCorp.engine.graphics.screen.Window;
-import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.graphics.Window;
+import com.rugieCorp.engine.util.dt.Matrix4f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 
 /**
@@ -14,59 +13,74 @@ import com.rugieCorp.engine.util.dt.Vector2f;
  */
 public class CameraBoing extends GameComponent implements Camera{
 
-    private Vector2f offset;
+    private int bound = 200;
 
-    private int bound;
+    private Vector3f pos;
+    private Vector3f forward;
+    private Vector3f up;
 
-    private GUILabel pLabel;
+    private Matrix4f projection;
 
-    public CameraBoing(int bound) {
+    private boolean changed;
+
+    public CameraBoing(float left, float right, float bottom, float top, float near, float far) {
         super("camera");
-        offset = new Vector2f(-Window.getWidth()/2,-Window.getHeight()/2);
 
-        this.bound = bound;
+        this.changed = false;
 
+        this.pos = new Vector3f(-300,-300,0);
+        this.forward = new Vector3f(0,0,1).normalize();
+        this.up = new Vector3f(0,1,0).normalize();
+
+        projection = new Matrix4f().initOrthographic(left, right, bottom, top, near, far);
     }
 
     @Override
-    public void updateDep(){
-        offset.add(new Vector2f(-parent.getPosition().getX(),-parent.getPosition().getY()));
+    public Matrix4f getViewProjection(){
+        Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+        Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
 
-        this.pLabel = new GUILabel("pLabel",new Vector2f(10,770),new Vector2f(200,30),"");
-        Engine.getScreen().addGUI(this.pLabel);
+        return projection.mul(cameraRotation.mul(cameraTranslation));
     }
 
     @Override
-    public void update() {
-        pLabel.setText("X: " + offset.getX() + " Y: " + offset.getY());
+    public boolean changed() {
+        return changed;
+    }
+
+    @Override
+    public void init(){
+    }
+
+    //TODO: might bug out
+    @Override
+    public void getInput() {
+        changed = false;
     }
 
     public void move(int x, int y){
         if (moveCheck()){
-            offset = offset.add(new Vector2f(x,y));
+            pos = pos.add(new Vector3f(x,y,0));
+            changed = true;
         }
     }
 
     private boolean moveCheck(){
 
-        if (parent.getPosition().getX() < offset.getX() + bound) return true;
-        if (parent.getPosition().getX() + parent.getSize().getX() > offset.getX() + Window.getWidth() - bound) return true;
-        if (parent.getPosition().getY() < offset.getY() + bound) return true;
-        if (parent.getPosition().getY() + parent.getSize().getY()  > offset.getY() + Window.getHeight() - bound) return true;
+        if (parent.getPosition().getX() < pos.getX() + bound) return true;
+        if (parent.getPosition().getX() + parent.getScale().getX() > pos.getX() + Window.getWidth() - bound) return true;
+        if (parent.getPosition().getY() < pos.getY() + bound) return true;
+        if (parent.getPosition().getY() + parent.getScale().getY()  > pos.getY() + Window.getHeight() - bound) return true;
 
         return false;
     }
 
     public float getOffsetX() {
-        return offset.getX();
+        return pos.getX();
     }
 
     public float getOffsetY() {
-        return offset.getY();
+        return pos.getY();
     }
 
-    public void setOffset(Vector2f offset) {
-
-        this.offset = offset;
-    }
 }

@@ -2,8 +2,6 @@ package com.rugieCorp.engine.graphics.GUI;
 
 import com.rugieCorp.engine.util.dt.Vector2f;
 
-import javax.sound.sampled.Control;
-
 /**
  * User: Adam Chlupacek
  * Date: 26/04/14

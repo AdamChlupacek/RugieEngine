@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args){
         Engine engine = new Engine("Game",1000);
-        Engine.setScreen(new MainMenu());
+        Engine.setScreen(new TestGame());
 
         engine.start();
 

@@ -1,11 +1,13 @@
 package com.rugieCorp.engine.gameobject.component;
 
-import com.rugieCorp.engine.Input;
-import com.rugieCorp.engine.graphics.render.Square;
-import com.rugieCorp.engine.util.dt.Vector2i;
+import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.engine.graphics.Mesh;
+import com.rugieCorp.engine.graphics.Vertex;
+import com.rugieCorp.engine.graphics.shader.BasicShader;
+import com.rugieCorp.engine.graphics.shader.Shader;
+import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 import org.newdawn.slick.opengl.Texture;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * User: Adam Chlupacek
@@ -15,37 +17,45 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class RectangleRender extends GameComponent {
 
-    private Square square;
+    private Mesh mesh;
+    private Material material;
 
-    public RectangleRender(String name) {
-        super(name);
-    }
+    private Shader shader = BasicShader.getInstance();
 
-    public RectangleRender() {
-        this("rectangleRender");
+    public RectangleRender(Material material) {
+        super("rectangleRender");
+
+        this.material = material;
+
+        Vertex[] vertexes = new Vertex[]{
+                new Vertex(new Vector3f(0,0,0),new Vector2f(0,1)),
+                new Vertex(new Vector3f(1,0,0),new Vector2f(1,1)),
+                new Vertex(new Vector3f(1,1,0),new Vector2f(1,0)),
+                new Vertex(new Vector3f(0,1,0),new Vector2f(0,0))
+        };
+
+        int[] indices = new int[]{
+                0,1,2,
+                2,3,0
+        };
+
+        this.mesh = new Mesh(vertexes,indices);
     }
 
     @Override
-    public void updateDep(){
-        square = new Square(parent.getSize().getX(),parent.getSize().getY());
+    public void init(){
     }
 
     @Override
     public void render(){
-        glPushMatrix();
-        {
-            glTranslatef(parent.getPosition().getX(),parent.getPosition().getY(),0);
-            square.render();
-        }
-        glPopMatrix();
+        shader.bind();
+        shader.updateUniforms(getParent().getTransform(),material);
+
+        mesh.draw();
     }
 
     public void setTexture(Texture texture){
-        setTexture(texture,0,0,1,1);
-    }
-
-    public void setTexture(Texture texture, float tx, float ty, float mx, float my){
-        square.setTexture(texture,tx,ty,mx,my);
+        material.setTexture(texture);
     }
 
 }

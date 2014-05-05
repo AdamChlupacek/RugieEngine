@@ -1,13 +1,10 @@
 package com.rugieCorp.engine;
 
 import com.rugieCorp.engine.gameobject.component.Camera;
-import com.rugieCorp.engine.graphics.GUI.GUILabel;
-import com.rugieCorp.engine.graphics.screen.Screen;
-import com.rugieCorp.engine.graphics.screen.Window;
+import com.rugieCorp.engine.graphics.Screen;
+import com.rugieCorp.engine.graphics.Window;
 import com.rugieCorp.engine.util.FontLoader;
-import com.rugieCorp.engine.util.ResourceLoader;
 import com.rugieCorp.engine.util.Time;
-import com.rugieCorp.engine.util.dt.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -96,7 +93,7 @@ public class Engine {
             if (render){
                 glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
-                glLoadIdentity();
+//                glLoadIdentity();
                 screen.render();
                 Window.render();
                 frames++;

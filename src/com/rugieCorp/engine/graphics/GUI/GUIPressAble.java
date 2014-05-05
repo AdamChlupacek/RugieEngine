@@ -2,7 +2,6 @@ package com.rugieCorp.engine.graphics.GUI;
 
 import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import com.rugieCorp.engine.util.dt.Vector2i;
 
 
 /**
@@ -22,7 +21,7 @@ public class GUIPressAble extends GUI {
 
     @Override
     public void getInput() {
-        Vector2i mousePos = Input.getMousePosition();
+        Vector2f mousePos = Input.getMousePosition();
 
         boolean x = mousePos.getX() > getPosition().getX() && mousePos.getX() < getPosition().getX() + getSize().getX();
         boolean y = mousePos.getY() > getPosition().getY() && mousePos.getY() < getPosition().getY() + getSize().getY();

@@ -2,8 +2,6 @@ package com.rugieCorp.engine.graphics.GUI;
 
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
 import com.rugieCorp.engine.graphics.GUI.skin.ButtonTexture;
-import com.rugieCorp.engine.graphics.render.Square;
-import com.rugieCorp.engine.graphics.render.Text;
 import com.rugieCorp.engine.util.dt.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,10 +14,10 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class GUIButton extends GUIPressAble{
 
-    private Square button;
+//    private Square button;
     private ButtonTexture buttonTexture;
 
-    private Text text;
+//    private Text text;
     private String content;
 
     private Action action;
@@ -35,13 +33,13 @@ public class GUIButton extends GUIPressAble{
     public GUIButton(String id, String text, Vector2f position, Vector2f size, Skin skin) {
         super(id, position, size);
 
-        this.button = new Square(getSize().getX(),getSize().getY());
-        this.buttonTexture = skin.getButtonTexture();
-        this.button.setTexture(buttonTexture.getTexture());
-        this.button.setTextureCoor(buttonTexture.getNormal());
-
-        this.text = new Text();
-        this.text.setTextOffset(new Vector2f(30,-getSize().getY()));
+//        this.button = new Square(getSize().getX(),getSize().getY());
+//        this.buttonTexture = skin.getButtonTexture();
+//        this.button.setTexture(buttonTexture.getTexture());
+//        this.button.setTextureCoor(buttonTexture.getNormal());
+//
+//        this.text = new Text();
+//        this.text.setTextOffset(new Vector2f(30,-getSize().getY()));
         this.content = text;
     }
 
@@ -49,20 +47,20 @@ public class GUIButton extends GUIPressAble{
         glPushMatrix();
         {
             glTranslatef(getPosition().getX(),getPosition().getY(),0);
-            button.render();
-            text.render(content);
+//            button.render();
+//            text.render(content);
         }
         glPopMatrix();
     }
 
     @Override
     public void hoverOver(){
-        button.setTextureCoor(buttonTexture.getHover());
+//        button.setTextureCoor(buttonTexture.getHover());
     }
 
     @Override
     public void mousePress(){
-        button.setTextureCoor(buttonTexture.getDown());
+//        button.setTextureCoor(buttonTexture.getDown());
     }
 
     @Override
@@ -73,7 +71,7 @@ public class GUIButton extends GUIPressAble{
 
     @Override
     public void onExit(){
-        button.setTextureCoor(buttonTexture.getNormal());
+//        button.setTextureCoor(buttonTexture.getNormal());
     }
 
     public void setAction(Action action) {

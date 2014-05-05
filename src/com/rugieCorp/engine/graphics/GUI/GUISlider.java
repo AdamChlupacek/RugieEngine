@@ -3,7 +3,6 @@ package com.rugieCorp.engine.graphics.GUI;
 import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
 import com.rugieCorp.engine.graphics.GUI.skin.SliderTexture;
-import com.rugieCorp.engine.graphics.render.Square;
 import com.rugieCorp.engine.util.dt.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,8 +15,8 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class GUISlider extends GUIPressAble {
 
-    private Square bob;
-    private Square slider;
+//    private Square bob;
+//    private Square slider;
 
     private SliderTexture sliderTexture;
 
@@ -32,14 +31,14 @@ public class GUISlider extends GUIPressAble {
         this.length = 200;
         this.sliderPosition = position;
 
-        this.slider = new Square(length,6);
-        this.slider.setTexture(sliderTexture.getTexture());
-        this.slider.setTextureCoor(sliderTexture.getSliderNormal());
+//        this.slider = new Square(length,6);
+//        this.slider.setTexture(sliderTexture.getTexture());
+//        this.slider.setTextureCoor(sliderTexture.getSliderNormal());
 
 
-        this.bob = new Square(getSize().getX(),getSize().getY());
-        this.bob.setTexture(sliderTexture.getTexture());
-        this.bob.setTextureCoor(sliderTexture.getBobNormal());
+//        this.bob = new Square(getSize().getX(),getSize().getY());
+//        this.bob.setTexture(sliderTexture.getTexture());
+//        this.bob.setTextureCoor(sliderTexture.getBobNormal());
 
     }
 
@@ -48,25 +47,25 @@ public class GUISlider extends GUIPressAble {
         glPushMatrix();
         {
             glTranslatef(sliderPosition.getX(), sliderPosition.getY() + (getSize().getX() - 6)/2, 0);
-            slider.render();
+//            slider.render();
         }
         glPopMatrix();
         glPushMatrix();
         {
             glTranslatef(getPosition().getX(),getPosition().getY(),0);
-            bob.render();
+//            bob.render();
         }
         glPopMatrix();
     }
 
     @Override
     public void hoverOver() {
-        bob.setTextureCoor(sliderTexture.getBobHover());
+//        bob.setTextureCoor(sliderTexture.getBobHover());
     }
 
     @Override
     public void grabbed() {
-        bob.setTextureCoor(sliderTexture.getBobGrabbed());
+//        bob.setTextureCoor(sliderTexture.getBobGrabbed());
 
         float posDifference = Input.getMousePosition().getX() - getPosition().getX() - getSize().getX()/2;
         if (posDifference != 0)
@@ -75,18 +74,18 @@ public class GUISlider extends GUIPressAble {
 
     @Override
     public void onExit() {
-        bob.setTextureCoor(sliderTexture.getBobNormal());
+//        bob.setTextureCoor(sliderTexture.getBobNormal());
     }
 
     @Override
     public void grabRelease() {
-        bob.setTextureCoor(sliderTexture.getBobNormal());
+//        bob.setTextureCoor(sliderTexture.getBobNormal());
     }
 
     //TODO: create a new object??
     public void setLength(float length){
         this.length = length;
-        this.slider.setSx(length);
+//        this.slider.setSx(length);
     }
 
     @Override
@@ -102,6 +101,7 @@ public class GUISlider extends GUIPressAble {
     }
 
     public float getPercentage(){
-        return (getPosition().subtract(sliderPosition).getX())/ (length - getSize().getX());
+//        return (getPosition().subtract(sliderPosition).getX())/ (length - getSize().getX());
+        return 0;
     }
 }

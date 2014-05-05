@@ -1,37 +1,74 @@
 package com.rugieCorp.engine.gameobject;
 
-import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.gameobject.component.Camera;
+import com.rugieCorp.engine.util.dt.Matrix4f;
+import com.rugieCorp.engine.util.dt.Vector3f;
+
 
 /**
  * User: Adam Chlupacek
- * Date: 20/04/14
- * Time: 00:11
- * Package: com.rugieCorp.engine.gameobject
+ * Date: 16/03/14
+ * Time: 18:34
+ * Package: com.base.engine
  */
 public class Transform {
 
-    private Vector2f position;
-    private Vector2f size;
+    private Vector3f pos;
+    private Vector3f rot;
+    private Vector3f scale;
 
-
-    public Transform() {
-        this.position = new Vector2f(0,0);
-        this.size = new Vector2f(1,1);
+    public Transform(){
+        pos = new Vector3f(0,0,0);
+        rot = new Vector3f(0,0,0);
+        scale = new Vector3f(1,1,1);
     }
 
-    public Vector2f getPosition() {
-        return position;
+    public Matrix4f getTransformation(){
+        Matrix4f translationMatrix = new Matrix4f().initTranslation(pos.getX(), pos.getY(), pos.getZ());
+        Matrix4f rotationMatrix = new Matrix4f().initRotation(rot.getX(), rot.getY(), rot.getZ());
+        Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
+
+        return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
     }
 
-    public void setPosition(Vector2f position) {
-        this.position = position;
+    public Matrix4f getProjectedTransformation(Camera camera){
+
+        return camera.getViewProjection().mul(getTransformation());
     }
 
-    public Vector2f getSize() {
-        return size;
+    public Vector3f getPos() {
+        return pos;
     }
 
-    public void setSize(Vector2f size) {
-        this.size = size;
+    public void setPos(Vector3f pos) {
+        this.pos = pos;
+    }
+
+    public void setTranslation(float x, float y, float z) {
+        this.pos = new Vector3f(x, y, z);
+    }
+
+    public Vector3f getRot() {
+        return rot;
+    }
+
+    public void setRot(Vector3f rot) {
+        this.rot = rot;
+    }
+
+    public void setRotation(float x, float y, float z) {
+        this.rot = new Vector3f(x, y, z);
+    }
+
+    public Vector3f getScale() {
+        return scale;
+    }
+
+    public void setScale(Vector3f scale) {
+        this.scale = scale;
+    }
+
+    public void setScale(float x, float y, float z) {
+        this.scale = new Vector3f(x, y, z);
     }
 }

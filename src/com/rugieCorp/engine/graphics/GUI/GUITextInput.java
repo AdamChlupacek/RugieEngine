@@ -3,12 +3,8 @@ package com.rugieCorp.engine.graphics.GUI;
 import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.graphics.GUI.skin.InputTexture;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
-import com.rugieCorp.engine.graphics.render.Line;
-import com.rugieCorp.engine.graphics.render.Square;
-import com.rugieCorp.engine.graphics.render.Text;
 import com.rugieCorp.engine.util.Delay;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import org.newdawn.slick.Color;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -22,9 +18,9 @@ public class GUITextInput extends GUIPressAble {
 
     private boolean active;
 
-    private Square square;
-    private Text text;
-    private Line line;
+//    private Square square;
+//    private Text text;
+//    private Line line;
     private Delay lineDelay;
     private Delay displayDelay;
 
@@ -38,19 +34,19 @@ public class GUITextInput extends GUIPressAble {
 
         this.inputTexture = skin.getInputTexture();
 
-        this.square = new Square(size.getX(),size.getY());
-        this.square.setTexture(this.inputTexture.getTexture());
-        this.square.setTextureCoor(this.inputTexture.getNormal());
-
-        this.text = new Text();
-        this.text.setTextOffset(new Vector2f(5, - getSize().getY()));
-        this.text.setSlickColor(Color.black);
-
-        this.line = new Line(0,this.text.getTextHeight() - 9);
-        this.lineDelay = new Delay(0.5f);
-        this.displayDelay = new Delay(0.4f);
-
-        this.content = "";
+//        this.square = new Square(size.getX(),size.getY());
+//        this.square.setTexture(this.inputTexture.getTexture());
+//        this.square.setTextureCoor(this.inputTexture.getNormal());
+//
+//        this.text = new Text();
+//        this.text.setTextOffset(new Vector2f(5, - getSize().getY()));
+//        this.text.setSlickColor(Color.black);
+//
+//        this.line = new Line(0,this.text.getTextHeight() - 9);
+//        this.lineDelay = new Delay(0.5f);
+//        this.displayDelay = new Delay(0.4f);
+//
+//        this.content = "";
     }
 
     @Override
@@ -58,7 +54,7 @@ public class GUITextInput extends GUIPressAble {
         if (Input.getMouseDown(Input.LEFT_MB)){
             active = false;
             Input.record = false;
-            square.setTextureCoor(inputTexture.getNormal());
+//            square.setTextureCoor(inputTexture.getNormal());
         }
 
         super.getInput();
@@ -76,15 +72,15 @@ public class GUITextInput extends GUIPressAble {
         glPushMatrix();
         {
             glTranslatef(getPosition().getX(),getPosition().getY(), 0);
-            square.render();
-            text.render(content);
+//            square.render();
+//            text.render(content);
 
             if (lineDelay.isOver()){
                 displayDelay.start();
             }
             if (active && !displayDelay.isOver()){
-                glTranslatef(text.getTextWidth(content) + 8,2,0);
-                line.render();
+//                glTranslatef(text.getTextWidth(content) + 8,2,0);
+//                line.render();
             }else if (displayDelay.isOver()){
                 lineDelay.start();
             }
@@ -97,7 +93,7 @@ public class GUITextInput extends GUIPressAble {
     @Override
     public void hoverOver() {
         if(!active){
-            square.setTextureCoor(inputTexture.getHover());
+//            square.setTextureCoor(inputTexture.getHover());
         }
     }
 
@@ -105,14 +101,14 @@ public class GUITextInput extends GUIPressAble {
     public void mouseDown() {
         active = true;
         Input.record = true;
-        square.setTextureCoor(inputTexture.getActive());
+//        square.setTextureCoor(inputTexture.getActive());
         lineDelay.start();
     }
 
     @Override
     public void onExit() {
         if (!active){
-            square.setTextureCoor(inputTexture.getNormal());
+//            square.setTextureCoor(inputTexture.getNormal());
         }
     }
 }

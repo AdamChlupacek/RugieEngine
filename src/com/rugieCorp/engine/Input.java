@@ -1,6 +1,6 @@
 package com.rugieCorp.engine;
 
-import com.rugieCorp.engine.util.dt.Vector2i;
+import com.rugieCorp.engine.util.dt.Vector2f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -207,9 +207,9 @@ public class Input {
         return !getMouse(mouseButton) && lastMouse[mouseButton];
     }
 
-    public static Vector2i getMousePosition()
+    public static Vector2f getMousePosition()
     {
-        return new Vector2i(Mouse.getX(), Mouse.getY());
+        return new Vector2f(Mouse.getX(), Mouse.getY());
     }
 
     public static Character getKeyPressed(){

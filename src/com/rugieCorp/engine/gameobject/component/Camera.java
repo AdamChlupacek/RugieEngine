@@ -1,5 +1,7 @@
 package com.rugieCorp.engine.gameobject.component;
 
+import com.rugieCorp.engine.util.dt.Matrix4f;
+
 /**
  * User: Adam Chlupacek
  * Date: 20/04/14
@@ -13,4 +15,8 @@ public interface Camera {
     public float getOffsetX();
 
     public float getOffsetY();
+
+    public Matrix4f getViewProjection();
+
+    public boolean changed();
 }

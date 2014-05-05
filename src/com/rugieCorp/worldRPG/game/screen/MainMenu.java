@@ -4,10 +4,9 @@ import com.rugieCorp.engine.Engine;
 import com.rugieCorp.engine.gameobject.component.CameraStationary;
 import com.rugieCorp.engine.graphics.GUI.*;
 import com.rugieCorp.engine.graphics.GUI.skin.*;
-import com.rugieCorp.engine.graphics.screen.Screen;
+import com.rugieCorp.engine.graphics.Screen;
 import com.rugieCorp.engine.util.ResourceLoader;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import org.newdawn.slick.Color;
 
 /**
  * User: Adam Chlupacek
@@ -19,7 +18,7 @@ public class MainMenu extends Screen {
 
     public MainMenu() {
 
-        Engine.setMainCamera(new CameraStationary());
+        Engine.setMainCamera(new CameraStationary(0,1,0,1,1,-1));
 
         ButtonTexture bt = new ButtonTexture(ResourceLoader.loadTexture("button"),
                 new float[]{0,0,242f/256,31f/256},          //Normal state
@@ -77,8 +76,8 @@ public class MainMenu extends Screen {
         addGUI(button5);
 
         GUILabel label = new GUILabel("version", new Vector2f(1150,5),new Vector2f(150,20),"Rugie engine v0.0.1");
-        label.setFont("arial12");
-        label.setColor(Color.black);
+//        label.setFont("arial12");
+//        label.setColor(Color.black);
         addGUI(label);
 
         GUI checkBox = new GUITick("check",new Vector2f(100,100),new Vector2f(25,25),"Test",skin);

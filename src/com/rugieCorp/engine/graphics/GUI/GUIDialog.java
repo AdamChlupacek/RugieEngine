@@ -3,9 +3,7 @@ package com.rugieCorp.engine.graphics.GUI;
 import com.rugieCorp.engine.Engine;
 import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
-import com.rugieCorp.engine.graphics.render.Square;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import com.rugieCorp.engine.util.dt.Vector2i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +19,10 @@ import static org.lwjgl.opengl.GL11.*;
 public class GUIDialog extends GUIPressAble {
 
     private float topBarHeight;
-    private Vector2i pressPosition;
+    private Vector2f pressPosition;
 
-    private Square top;
-    private Square body;
+//    private Square top;
+//    private Square body;
 
     private List<GUI> children;
 
@@ -39,24 +37,24 @@ public class GUIDialog extends GUIPressAble {
         this.topBarHeight = 30;
         this.drag = false;
 
-        this.top = new Square(size.getX(),topBarHeight);
-        this.body = new Square(size.getX(), size.getY() - topBarHeight);
+//        this.top = new Square(size.getX(),topBarHeight);
+//        this.body = new Square(size.getX(), size.getY() - topBarHeight);
 
         //TODO: skin implementation
 
         active = false;
 
-        GUIButton close = new GUIButton(getId() +":Close","",new Vector2f(getPosition().getX() + 5 ,getPosition().getY() + getSize().getY() - 15),new Vector2f(10,10),skin);
+//        GUIButton close = new GUIButton(getId() +":Close","",new Vector2f(getPosition().getX() + 5 ,getPosition().getY() + getSize().getY() - 15),new Vector2f(10,10),skin);
 
-        close.setAction(new Action() {
-            @Override
-            public void go() {
-                Engine.getScreen().removeGUI(getThis());
-                System.out.println("Pressed");
-            }
-        });
-
-        this.children.add(close);
+//        close.setAction(new Action() {
+//            @Override
+//            public void go() {
+//                Engine.getScreen().removeGUI(getThis());
+//                System.out.println("Pressed");
+//            }
+//        });
+//
+//        this.children.add(close);
     }
 
     @Override
@@ -82,9 +80,9 @@ public class GUIDialog extends GUIPressAble {
         glPushMatrix();
         {
             glTranslatef(getPosition().getX(), getPosition().getY(),0);
-            body.render();
-            glTranslatef(0,getSize().getY() - topBarHeight,0);
-            top.render();
+//            body.render();
+//            glTranslatef(0,getSize().getY() - topBarHeight,0);
+//            top.render();
         }
         glPopMatrix();
 
@@ -98,7 +96,7 @@ public class GUIDialog extends GUIPressAble {
         //TODO: bit different this pls
         if (Input.getMousePosition().getY() > getPosition().getY() + getSize().getY() - topBarHeight){
             drag = true;
-            pressPosition = Input.getMousePosition().subtract(getPosition().toVectori());
+//            pressPosition = Input.getMousePosition().subtract(getPosition().toVectori());
         }
 
         if (!active){
@@ -127,10 +125,10 @@ public class GUIDialog extends GUIPressAble {
     @Override
     public void grabbed() {
         if (drag && active){
-            Vector2i posDifference = Input.getMousePosition().subtract(pressPosition);
-            movePosChildren(posDifference.toVectorf());
-            setPosition(posDifference.toVectorf());
-            pressPosition = Input.getMousePosition().subtract(getPosition().toVectori());
+//            Vector2i posDifference = Input.getMousePosition().subtract(pressPosition);
+//            movePosChildren(posDifference.toVectorf());
+//            setPosition(posDifference.toVectorf());
+//            pressPosition = Input.getMousePosition().subtract(getPosition().toVectori());
         }
     }
 
@@ -141,7 +139,7 @@ public class GUIDialog extends GUIPressAble {
 
     private void movePosChildren(Vector2f vector2f){
         for (GUI child:children){
-            child.setPosition(vector2f.add(child.getPosition().subtract(getPosition())));
+//            child.setPosition(vector2f.add(child.getPosition().subtract(getPosition())));
         }
     }
 

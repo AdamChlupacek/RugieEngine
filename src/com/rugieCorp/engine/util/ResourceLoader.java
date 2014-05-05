@@ -38,7 +38,7 @@ public class ResourceLoader {
 
     public static Texture loadTexture(String path){
         try {
-            return TextureLoader.getTexture("png", new FileInputStream("res/texture/" + path + ".png"));
+            return TextureLoader.getTexture("png", new FileInputStream("res/" + path + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

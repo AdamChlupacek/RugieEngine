@@ -1,7 +1,7 @@
 package com.rugieCorp.engine.gameobject.component;
 
 import com.rugieCorp.engine.Input;
-import com.rugieCorp.engine.util.dt.Vector2i;
+import com.rugieCorp.engine.util.dt.Vector2f;
 
 /**
  * User: Adam Chlupacek
@@ -20,10 +20,10 @@ public class PressListener extends GameComponent {
     @Override
     public void getInput(){
 
-        Vector2i mousePos = Input.getMousePosition();
+        Vector2f mousePos = Input.getMousePosition();
 
-        boolean x = mousePos.getX() > parent.getPosition().getX() && mousePos.getX() < parent.getPosition().getX() + parent.getSize().getX();
-        boolean y = mousePos.getY() > parent.getPosition().getY() && mousePos.getY() < parent.getPosition().getY() + parent.getSize().getY();
+        boolean x = mousePos.getX() > parent.getPosition().getX() && mousePos.getX() < parent.getPosition().getX() + parent.getScale().getX();
+        boolean y = mousePos.getY() > parent.getPosition().getY() && mousePos.getY() < parent.getPosition().getY() + parent.getScale().getY();
 
         if (x && y && Input.getMouseUp(Input.LEFT_MB)){
             if (action != null){

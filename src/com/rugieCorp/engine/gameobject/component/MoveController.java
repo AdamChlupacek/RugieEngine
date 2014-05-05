@@ -2,6 +2,7 @@ package com.rugieCorp.engine.gameobject.component;
 
 import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 /**
  * User: Adam Chlupacek
@@ -24,7 +25,7 @@ public class MoveController extends GameComponent {
     }
 
     @Override
-    public void updateDep(){
+    public void init(){
         collider = (Collider)parent.getComponent("collider");
         camera = (Camera)parent.getComponent("camera");
     }
@@ -50,13 +51,12 @@ public class MoveController extends GameComponent {
     }
 
     public void move(int x, int y){
-        Vector2f origP = parent.getPosition();
-        parent.setPosition(parent.getPosition().add(new Vector2f(x * speed, y * speed)));
+        Vector3f origP = parent.getPosition();
+        parent.setPosition(parent.getPosition().add(new Vector3f(x * speed, y * speed,0)));
         collider.collide();
         if (collider != null && collider.isCollided()){
             parent.setPosition(origP);
         }
-
         camera.move(x, y);
     }
 }
