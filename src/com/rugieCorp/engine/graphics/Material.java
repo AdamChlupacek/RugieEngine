@@ -1,7 +1,6 @@
 package com.rugieCorp.engine.graphics;
 
 import com.rugieCorp.engine.util.dt.Vector3f;
-import org.newdawn.slick.opengl.Texture;
 
 /**
  * User: Adam Chlupacek

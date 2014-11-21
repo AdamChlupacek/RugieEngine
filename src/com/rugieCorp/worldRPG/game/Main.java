@@ -2,8 +2,12 @@ package com.rugieCorp.worldRPG.game;
 
 
 import com.rugieCorp.engine.Engine;
+import com.rugieCorp.engine.Input;
+import com.rugieCorp.engine.event.DeadEventListener;
 import com.rugieCorp.worldRPG.game.screen.MainMenu;
 import com.rugieCorp.worldRPG.game.screen.TestGame;
+
+import java.lang.reflect.Method;
 
 /**
  * User: Adam Chlupacek
@@ -13,8 +17,13 @@ import com.rugieCorp.worldRPG.game.screen.TestGame;
 public class Main {
 
     public static void main(String[] args){
+        /// --------
+
+        //Input.inputBus.register(new DeadEventListener());
+
+        /// --------
         Engine engine = new Engine("Game",1000);
-        Engine.setScreen(new TestGame());
+        Engine.setScreen(new MainMenu());
 
         engine.start();
 

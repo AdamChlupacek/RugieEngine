@@ -1,5 +1,6 @@
 package com.rugieCorp.engine.gameobject;
 
+import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.error.RugieError;
 import com.rugieCorp.engine.gameobject.component.GameComponent;
 import com.rugieCorp.engine.util.dt.Vector3f;
@@ -29,18 +30,8 @@ public class GameObject {
 
         transform = new Transform();
 
-        //TODO: Better id system
         this.id = id;
 
-    }
-
-    public void getInputAll(){
-
-        getInput();
-
-        for (GameObject child: children){
-            child.getInputAll();
-        }
     }
 
     public void updateAll(){
@@ -57,12 +48,6 @@ public class GameObject {
 
         for (GameObject child: children){
             child.renderAll();
-        }
-    }
-
-    public void getInput(){
-        for (GameComponent component:components){
-            component.getInput();
         }
     }
 
@@ -97,6 +82,13 @@ public class GameObject {
     public void addComponent(GameComponent component){
         component.setParent(this);
         components.add(component);
+        Input.inputBus.register(component);
+    }
+
+    public void removeComponents(){
+        for (GameComponent component:components){
+           Input.inputBus.unregister(component);
+        }
     }
 
     public void addChild(GameObject gameObject){

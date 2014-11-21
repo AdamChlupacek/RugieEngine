@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.graphics.GUI.skin;
 
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.engine.graphics.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -10,30 +12,30 @@ import org.newdawn.slick.opengl.Texture;
  */
 public class ButtonTexture {
 
-    private Texture texture;
+    private Material material;
 
-    private float[] normal, down, hover;
+    private Vector4f normal, down, hover;
 
-    public ButtonTexture(Texture texture, float[] normal, float[] down, float[] hover) {
-        this.texture = texture;
+    public ButtonTexture(Texture texture, Vector4f normal, Vector4f down, Vector4f hover) {
+        this.material = new Material(texture);
         this.normal = normal;
         this.down = down;
         this.hover = hover;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Material getMaterial() {
+        return material;
     }
 
-    public float[] getNormal() {
+    public Vector4f getNormal() {
         return normal;
     }
 
-    public float[] getDown() {
+    public Vector4f getDown() {
         return down;
     }
 
-    public float[] getHover() {
+    public Vector4f getHover() {
         return hover;
     }
 }

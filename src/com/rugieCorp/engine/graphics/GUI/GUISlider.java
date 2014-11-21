@@ -1,9 +1,16 @@
 package com.rugieCorp.engine.graphics.GUI;
 
 import com.rugieCorp.engine.Input;
+import com.rugieCorp.engine.event.EventMouse;
+import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
 import com.rugieCorp.engine.graphics.GUI.skin.SliderTexture;
+import com.rugieCorp.engine.graphics.MeshManager;
+import com.rugieCorp.engine.graphics.shader.SpriteVSShader;
 import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
+import com.rugieCorp.engine.util.dt.Vector4f;
+import org.lwjgl.util.vector.Vector;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -15,13 +22,13 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class GUISlider extends GUIPressAble {
 
-//    private Square bob;
-//    private Square slider;
-
     private SliderTexture sliderTexture;
 
     private float length;
-    private Vector2f sliderPosition;
+
+    private Transform lineTransform;
+
+    private Vector4f texPos;
 
     public GUISlider(String id, Vector2f position, Vector2f size, Skin skin) {
         super(id, position, size);
@@ -29,60 +36,51 @@ public class GUISlider extends GUIPressAble {
         this.sliderTexture = skin.getSliderTexture();
 
         this.length = 200;
-        this.sliderPosition = position;
 
-//        this.slider = new Square(length,6);
-//        this.slider.setTexture(sliderTexture.getTexture());
-//        this.slider.setTextureCoor(sliderTexture.getSliderNormal());
+        this.texPos = sliderTexture.getBobNormal();
 
-
-//        this.bob = new Square(getSize().getX(),getSize().getY());
-//        this.bob.setTexture(sliderTexture.getTexture());
-//        this.bob.setTextureCoor(sliderTexture.getBobNormal());
+        this.lineTransform = new Transform();
+        this.lineTransform.setTranslation(position.getX(),position.getY(),0);
+        this.lineTransform.setScale(this.length,10,0);
 
     }
 
     @Override
     public void render() {
-        glPushMatrix();
-        {
-            glTranslatef(sliderPosition.getX(), sliderPosition.getY() + (getSize().getX() - 6)/2, 0);
-//            slider.render();
-        }
-        glPopMatrix();
-        glPushMatrix();
-        {
-            glTranslatef(getPosition().getX(),getPosition().getY(),0);
-//            bob.render();
-        }
-        glPopMatrix();
+
+        SpriteVSShader.getInstance().bind();
+        SpriteVSShader.getInstance().updateUniforms(lineTransform,sliderTexture.getMaterial(),sliderTexture.getSliderNormal());
+        MeshManager.squareMesh.draw();
+
+        SpriteVSShader.getInstance().bind();
+        SpriteVSShader.getInstance().updateUniforms(getTransform(),sliderTexture.getMaterial(),texPos);
+        MeshManager.squareMesh.draw();
     }
 
     @Override
-    public void hoverOver() {
-//        bob.setTextureCoor(sliderTexture.getBobHover());
+    public void hoverOver(EventMouse eventMouse) {
+        texPos = sliderTexture.getBobHover() ;
     }
 
     @Override
-    public void grabbed() {
-//        bob.setTextureCoor(sliderTexture.getBobGrabbed());
+    public void grabbed(EventMouse eventMouse) {
+        texPos = sliderTexture.getBobGrabbed();
 
-        float posDifference = Input.getMousePosition().getX() - getPosition().getX() - getSize().getX()/2;
+        float posDifference = eventMouse.getPosition().getX() - getPosition().getX() - getScale().getX()/2;
         if (posDifference != 0)
-            setPosition(getPosition().add(new Vector2f(posDifference,0)));
+            setPosition(getPosition().add(new Vector3f(posDifference,0,0)).getXY());
     }
 
     @Override
-    public void onExit() {
-//        bob.setTextureCoor(sliderTexture.getBobNormal());
+    public void onExit(EventMouse eventMouse) {
+        texPos = sliderTexture.getBobNormal();
     }
 
     @Override
-    public void grabRelease() {
-//        bob.setTextureCoor(sliderTexture.getBobNormal());
+    public void grabRelease(EventMouse eventMouse) {
+        texPos = sliderTexture.getBobNormal();
     }
 
-    //TODO: create a new object??
     public void setLength(float length){
         this.length = length;
 //        this.slider.setSx(length);
@@ -90,18 +88,17 @@ public class GUISlider extends GUIPressAble {
 
     @Override
     public void setPosition(Vector2f position) {
-        if (!(position.getX() + getSize().getX() > sliderPosition.getX() + length) && !(position.getX() < sliderPosition.getX())){
+        if (!(position.getX() + getScale().getX() > lineTransform.getPos().getX() + length) && !(position.getX() < lineTransform.getPos().getX())){
             super.setPosition(position);
-        }else if(position.getX() + getSize().getX() > sliderPosition.getX() + length ){
-            super.setPosition(new Vector2f(sliderPosition.getX() + length - getSize().getX(),position.getY()));
-        }else if (position.getX() < sliderPosition.getX()){
-            super.setPosition(new Vector2f(sliderPosition.getX(),position.getY()));
+        }else if(position.getX() + getScale().getX() > lineTransform.getPos().getX() + length ){
+            super.setPosition(new Vector2f(lineTransform.getPos().getX() + length - getScale().getX(),position.getY()));
+        }else if (position.getX() < lineTransform.getPos().getX()){
+            super.setPosition(new Vector2f(lineTransform.getPos().getX(),position.getY()));
         }
 
     }
 
     public float getPercentage(){
-//        return (getPosition().subtract(sliderPosition).getX())/ (length - getSize().getX());
-        return 0;
+        return (getPosition().sub(lineTransform.getPos()).getX())/ (length - getScale().getX());
     }
 }

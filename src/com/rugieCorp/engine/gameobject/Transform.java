@@ -71,4 +71,12 @@ public class Transform {
     public void setScale(float x, float y, float z) {
         this.scale = new Vector3f(x, y, z);
     }
+
+    public Transform copy() {
+        Transform copyTransform = new Transform();
+        copyTransform.setScale(scale);
+        copyTransform.setPos(pos);
+        copyTransform.setRot(rot);
+        return copyTransform;
+    }
 }

@@ -5,16 +5,19 @@ in vec2 texCoord0;
 uniform vec3 color;
 uniform sampler2D sampler;
 
+uniform vec4 texAdjust;
+
 out vec4 fragColor;
 
 void main(){
 
-	vec4 textureColor = texture(sampler, texCoord0.xy);
+	vec2 texCoord1 = texAdjust.xy + texCoord0.xy * texAdjust.zw;
+
+	vec4 textureColor = texture(sampler, texCoord1.xy);
 
 	if(textureColor == vec4(0,0,0,0))
 		fragColor =  vec4(color, 0);
 	else
 		fragColor = textureColor * vec4(color, 1);
-
 
 }

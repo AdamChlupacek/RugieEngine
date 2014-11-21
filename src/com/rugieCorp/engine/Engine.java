@@ -1,6 +1,7 @@
 package com.rugieCorp.engine;
 
 import com.rugieCorp.engine.gameobject.component.Camera;
+import com.rugieCorp.engine.graphics.MeshManager;
 import com.rugieCorp.engine.graphics.Screen;
 import com.rugieCorp.engine.graphics.Window;
 import com.rugieCorp.engine.util.FontLoader;
@@ -25,10 +26,12 @@ public class Engine {
     public Engine(String title, int fps) {
         Window.createDisplay();
         Window.setTitle(title);
-        FontLoader.populateFonts();
         this.frameTime = (float)1/fps;
 
         screen = new Screen();
+
+        MeshManager.createMeshes();
+        FontLoader.populateFonts();
     }
 
     public static Camera getMainCamera() {
@@ -73,12 +76,6 @@ public class Engine {
                 if (Window.isCloseRequested())
                     stop();
 
-//                System.out.println();
-//                System.out.println(unprocessedTime);
-//                System.out.println(frameTime);
-//                System.out.println();
-
-                screen.getInput((float) frameTime);
                 Input.update();
 
                 screen.update((float)frameTime);
@@ -118,8 +115,9 @@ public class Engine {
     }
 
     public static void setScreen(Screen screen) {
+        Engine.screen.dispose();
         Engine.screen = screen;
-        screen.getRoot().updateDepsAll();
+        Engine.screen.getRoot().updateDepsAll();
     }
 
     public static void setMainCamera(Camera mainCamera) {

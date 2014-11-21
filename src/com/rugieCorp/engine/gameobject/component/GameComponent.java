@@ -13,7 +13,6 @@ public class GameComponent {
     protected GameObject parent;
     private String name;
 
-    public void getInput(){}
     public void update(){}
     public void render(){}
 

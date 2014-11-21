@@ -44,7 +44,7 @@ public class Tile {
         this.texPos = new Vector2f(texX,texY);
         tiles.put(color.getColor(),this);
 
-        //TODO: Change it to make this basic square mesh stored somewhere
+        //TODO: Check if mesh square by square is less efficient
 
         Vertex[] vertexes = new Vertex[]{
                 new Vertex(new Vector3f(0,0,0),new Vector2f(0,1)),

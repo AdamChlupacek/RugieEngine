@@ -2,12 +2,13 @@ package com.rugieCorp.engine.gameobject.component;
 
 import com.rugieCorp.engine.graphics.Material;
 import com.rugieCorp.engine.graphics.Mesh;
+import com.rugieCorp.engine.graphics.Texture;
 import com.rugieCorp.engine.graphics.Vertex;
 import com.rugieCorp.engine.graphics.shader.BasicShader;
 import com.rugieCorp.engine.graphics.shader.Shader;
 import com.rugieCorp.engine.util.dt.Vector2f;
 import com.rugieCorp.engine.util.dt.Vector3f;
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -49,7 +50,7 @@ public class RectangleRender extends GameComponent {
     @Override
     public void render(){
         shader.bind();
-        shader.updateUniforms(getParent().getTransform(),material);
+        shader.updateUniforms(getParent().getTransform(),material,new Vector4f(0,0,0,0));
 
         mesh.draw();
     }

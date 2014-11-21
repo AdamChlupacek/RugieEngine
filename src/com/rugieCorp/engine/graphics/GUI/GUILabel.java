@@ -1,5 +1,7 @@
 package com.rugieCorp.engine.graphics.GUI;
 
+import com.rugieCorp.engine.graphics.font.FontText;
+import com.rugieCorp.engine.util.FontLoader;
 import com.rugieCorp.engine.util.dt.Vector2f;
 
 /**
@@ -10,26 +12,27 @@ import com.rugieCorp.engine.util.dt.Vector2f;
  */
 public class GUILabel extends GUI {
 
-    //private Text text;
-    private String content;
+    private FontText text;
 
     public GUILabel(String id, Vector2f position, Vector2f size, String text) {
         super(id, position, size);
 
-//        this.text = new Text();
-//        this.text.setSlickColor(Color.white);
-//        this.text.setTextOffset(new Vector2f(10, -getSize().getY()));
+        this.text = new FontText(FontLoader.font,24);
+        this.text.setText(text);
 
-        this.content = text;
     }
 
     @Override
     public void render() {
-
+        text.draw(getPosition().getX(),getPosition().getY());
     }
 
     public void setText(String text) {
-        this.content = text;
+        this.text.setText(text);
+    }
+
+    public void setSize(int size){
+        text.setSize(size);
     }
 
 }

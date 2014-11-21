@@ -1,6 +1,7 @@
 package com.rugieCorp.engine.graphics.GUI.skin;
 
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -10,37 +11,32 @@ import org.newdawn.slick.opengl.Texture;
  */
 public class DialogTexture {
 
-    private ButtonTexture closeButton;
 
     private Texture texture;
 
-    private float[] top, body, activeTop;
+    private Vector4f top, body, activeTop;
 
-    public DialogTexture(Texture texture, float[] top, float[] body, float[] activeTop, ButtonTexture closeButton) {
+    public DialogTexture(Texture texture, Vector4f top, Vector4f body, Vector4f activeTop) {
         this.texture = texture;
         this.top = top;
         this.body = body;
         this.activeTop = activeTop;
-        this.closeButton = closeButton;
     }
 
     public Texture getTexture() {
         return texture;
     }
 
-    public float[] getActiveTop() {
+    public Vector4f getActiveTop() {
         return activeTop;
     }
 
-    public float[] getBody() {
+    public Vector4f getBody() {
         return body;
     }
 
-    public float[] getTop() {
+    public Vector4f getTop() {
         return top;
     }
 
-    public ButtonTexture getCloseButton() {
-        return closeButton;
-    }
 }

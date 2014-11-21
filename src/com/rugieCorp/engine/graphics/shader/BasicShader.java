@@ -5,6 +5,7 @@ import com.rugieCorp.engine.Engine;
 import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.util.dt.Matrix4f;
 import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -32,7 +33,7 @@ public class BasicShader extends Shader {
     }
 
     @Override
-    public void updateUniforms(Transform transform, Material material){
+    public void updateUniforms(Transform transform, Material material, Vector4f texPos){
 
         Matrix4f worldMatrix = transform.getTransformation();
         Matrix4f projectedMatrix = Engine.getMainCamera().getViewProjection().mul(worldMatrix);

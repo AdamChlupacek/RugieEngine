@@ -1,8 +1,9 @@
 package com.rugieCorp.engine.gameobject.component;
 
 import com.rugieCorp.engine.graphics.Particle;
+import com.rugieCorp.engine.graphics.Texture;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import org.newdawn.slick.opengl.Texture;
+
 
 import java.util.ArrayList;
 import java.util.List;

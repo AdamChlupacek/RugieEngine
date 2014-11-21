@@ -1,6 +1,7 @@
 package com.rugieCorp.engine.graphics;
 
 import com.rugieCorp.engine.Engine;
+import com.rugieCorp.engine.Input;
 import com.rugieCorp.engine.gameobject.GameObject;
 import com.rugieCorp.engine.gameobject.component.Camera;
 import com.rugieCorp.engine.graphics.GUI.GUI;
@@ -19,8 +20,6 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
  */
 public class Screen{
 
-    //TODO: change to gameObject + component style of engine
-
     private GameObject root = new GameObject("root");
     private List<GUI> guiLayer = new ArrayList<GUI>();
 
@@ -28,13 +27,6 @@ public class Screen{
     private List<GUI> removeGuiLayer = new ArrayList<GUI>();
 
     private Engine engine;
-
-    public void getInput(float delta) {
-        for(GUI gui:guiLayer){
-            gui.getInput();
-        }
-        root.getInputAll();
-    }
 
     public void update(float delta) {
         for(GUI gui:guiLayer){
@@ -55,10 +47,7 @@ public class Screen{
     }
 
     public void render() {
-        Camera camera = Engine.getMainCamera();
-//        glTranslatef(-camera.getOffsetX(),-camera.getOffsetY(),0);
         root.renderAll();
-//        glTranslatef(camera.getOffsetX(),camera.getOffsetY(),0);
         for(GUI gui:guiLayer){
             gui.render();
         }
@@ -82,6 +71,7 @@ public class Screen{
 
     public void addGUI(GUI gui){
         addGuiLayer.add(gui);
+        Input.inputBus.register(gui);
     }
 
     public void removeGUI(GUI gui){
@@ -107,5 +97,11 @@ public class Screen{
         }
 
         return lastDialog;
+    }
+
+    public void dispose(){
+        for (GUI gui:guiLayer){
+            Input.inputBus.unregister(gui);
+        }
     }
 }

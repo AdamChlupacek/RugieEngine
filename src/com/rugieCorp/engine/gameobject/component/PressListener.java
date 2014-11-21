@@ -17,20 +17,6 @@ public class PressListener extends GameComponent {
         super("pressListener");
     }
 
-    @Override
-    public void getInput(){
-
-        Vector2f mousePos = Input.getMousePosition();
-
-        boolean x = mousePos.getX() > parent.getPosition().getX() && mousePos.getX() < parent.getPosition().getX() + parent.getScale().getX();
-        boolean y = mousePos.getY() > parent.getPosition().getY() && mousePos.getY() < parent.getPosition().getY() + parent.getScale().getY();
-
-        if (x && y && Input.getMouseUp(Input.LEFT_MB)){
-            if (action != null){
-                action.pressed();
-            }
-        }
-    }
 
     public void addAction(PressAction pressAction){
         action = pressAction;

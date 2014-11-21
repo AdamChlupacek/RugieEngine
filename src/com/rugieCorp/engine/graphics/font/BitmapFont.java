@@ -1,7 +1,7 @@
 package com.rugieCorp.engine.graphics.font;
 
+import com.rugieCorp.engine.graphics.Texture;
 import com.rugieCorp.engine.util.ResourceLoader;
-import org.newdawn.slick.opengl.Texture;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,7 +20,7 @@ public class BitmapFont {
 
     private Texture texture;
     private String name;
-
+    private int size;
 
 
     public BitmapFont(Map<Integer, Glyph> glyphs, Texture texture, String name) {
@@ -36,7 +36,7 @@ public class BitmapFont {
         BufferedReader fontReader;
 
         try{
-            fontReader = new BufferedReader(new FileReader("./res/font/" + path));
+            fontReader = new BufferedReader(new FileReader("./res/font/" + path + ".fnt"));
             String line;
 
             while ((line = fontReader.readLine()) != null){
@@ -45,6 +45,8 @@ public class BitmapFont {
 
                 if (lineSplit[0].equals("info")){
                     this.name = lineSplit[1].substring(5);
+                    size = Integer.valueOf(lineSplit[2].substring(5));
+                    System.out.println("info detected");
                 }else if (lineSplit[0].equals("char")){
                     glyphs.put(Integer.valueOf(lineSplit[1].substring(3)),new Glyph(
                             Integer.valueOf(lineSplit[2].substring(2)),
@@ -81,5 +83,9 @@ public class BitmapFont {
 
     public Texture getTexture() {
         return texture;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

@@ -1,5 +1,9 @@
 package com.rugieCorp.engine.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * User: Rugnarog the Mighty!
  * Date: 9/11/13
@@ -11,5 +15,11 @@ public class Time {
 
     public static double getTime(){
         return (double)System.nanoTime()/(double)SECOND;
+    }
+
+    public static String getTime24H(){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

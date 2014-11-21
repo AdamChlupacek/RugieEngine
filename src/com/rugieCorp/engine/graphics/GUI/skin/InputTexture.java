@@ -1,6 +1,7 @@
 package com.rugieCorp.engine.graphics.GUI.skin;
 
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -12,9 +13,9 @@ public class InputTexture {
 
     private Texture texture;
 
-    private float[] normal, hover, active;
+    private Vector4f normal, hover, active;
 
-    public InputTexture(Texture texture, float[] normal, float[] hover, float[] active) {
+    public InputTexture(Texture texture, Vector4f normal, Vector4f hover, Vector4f active) {
         this.texture = texture;
         this.normal = normal;
         this.active = active;
@@ -25,15 +26,15 @@ public class InputTexture {
         return texture;
     }
 
-    public float[] getNormal() {
+    public Vector4f getNormal() {
         return normal;
     }
 
-    public float[] getHover() {
+    public Vector4f getHover() {
         return hover;
     }
 
-    public float[] getActive() {
+    public Vector4f getActive() {
         return active;
     }
 

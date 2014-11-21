@@ -11,24 +11,18 @@ import com.rugieCorp.engine.util.dt.Vector3f;
  */
 public class Vertex {
 
-    public static final int SIZE = 8;
+    public static final int SIZE = 5;
 
     private Vector3f pos;
     private Vector2f textCoord;
-    private Vector3f normal;
 
     public Vertex(Vector3f pos) {
         this(pos,new Vector2f(0,0));
     }
 
-    public Vertex(Vector3f pos, Vector2f textCoord) {
-        this(pos,textCoord, new Vector3f(0,0,0));
-    }
-
-    public Vertex(Vector3f pos, Vector2f textCoord, Vector3f normal){
+    public Vertex(Vector3f pos, Vector2f textCoord){
         this.pos = pos;
         this.textCoord = textCoord;
-        this.normal = normal;
     }
 
     public Vector3f getPos() {
@@ -51,11 +45,4 @@ public class Vertex {
         this.textCoord = textCoord;
     }
 
-    public Vector3f getNormal() {
-        return normal;
-    }
-
-    public void setNormal(Vector3f normal) {
-        this.normal = normal;
-    }
 }

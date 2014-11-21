@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.graphics.GUI;
 
 import com.rugieCorp.engine.Input;
+import com.rugieCorp.engine.event.EventInput;
+import com.rugieCorp.engine.event.EventMouse;
 import com.rugieCorp.engine.graphics.GUI.skin.InputTexture;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
 import com.rugieCorp.engine.util.Delay;
@@ -50,24 +52,6 @@ public class GUITextInput extends GUIPressAble {
     }
 
     @Override
-    public void getInput() {
-        if (Input.getMouseDown(Input.LEFT_MB)){
-            active = false;
-            Input.record = false;
-//            square.setTextureCoor(inputTexture.getNormal());
-        }
-
-        super.getInput();
-
-        if (active){
-            Character c = Input.getKeyPressed();
-            if (c != null && Character.isAlphabetic(c))
-                content += c;
-        }
-
-    }
-
-    @Override
     public void render() {
         glPushMatrix();
         {
@@ -91,22 +75,22 @@ public class GUITextInput extends GUIPressAble {
     }
 
     @Override
-    public void hoverOver() {
+    public void hoverOver(EventMouse eventMouse) {
         if(!active){
 //            square.setTextureCoor(inputTexture.getHover());
         }
     }
 
     @Override
-    public void mouseDown() {
+    public void mouseDown(EventMouse eventMouse) {
         active = true;
-        Input.record = true;
+//        Input.record = true;
 //        square.setTextureCoor(inputTexture.getActive());
         lineDelay.start();
     }
 
     @Override
-    public void onExit() {
+    public void onExit(EventMouse eventMouse) {
         if (!active){
 //            square.setTextureCoor(inputTexture.getNormal());
         }

@@ -1,6 +1,9 @@
 package com.rugieCorp.engine.graphics.GUI;
 
+import com.google.common.eventbus.Subscribe;
 import com.rugieCorp.engine.Input;
+import com.rugieCorp.engine.event.EventInput;
+import com.rugieCorp.engine.event.EventMouse;
 import com.rugieCorp.engine.util.dt.Vector2f;
 
 
@@ -19,80 +22,75 @@ public class GUIPressAble extends GUI {
         super(id, position, size);
     }
 
-    @Override
-    public void getInput() {
-        Vector2f mousePos = Input.getMousePosition();
+    @Subscribe
+    public void input(EventMouse eventMouse){
+        if (eventMouse.getButton() == Input.LEFT_MB){
+            Vector2f mousePos = eventMouse.getPosition();
 
-        boolean x = mousePos.getX() > getPosition().getX() && mousePos.getX() < getPosition().getX() + getSize().getX();
-        boolean y = mousePos.getY() > getPosition().getY() && mousePos.getY() < getPosition().getY() + getSize().getY();
+            boolean x = mousePos.getX() > getPosition().getX() && mousePos.getX() < getPosition().getX() + getScale().getX();
+            boolean y = mousePos.getY() > getPosition().getY() && mousePos.getY() < getPosition().getY() + getScale().getY();
 
-        if (x && y){
-            hoverOver();
-            wasOver = true;
-            if (Input.getMouseDown(0)){
-                mouseDown();
-            }else if (Input.getMouseUp(0)){
-                mouseUp();
+            if (x && y){
+                if(!wasOver){
+                    mouseEnter(eventMouse);
+                }
+                hoverOver(eventMouse);
+                wasOver = true;
+                if (eventMouse.isDown()){
+                    mouseDown(eventMouse);
+                }else if (eventMouse.isUp()){
+                    mouseUp(eventMouse);
+                    grabbed = false;
+                }
+                if(eventMouse.isPress()){
+                    grabbed = true;
+                    mousePress(eventMouse);
+                }
+            }else if (wasOver){
+                onExit(eventMouse);
+                wasOver = false;
+            }
+
+            if (eventMouse.isUp()){
                 grabbed = false;
+                grabRelease(eventMouse);
             }
-            if(Input.getMouse(0)){
-                grabbed = true;
-                mousePress();
-            }
-            if (Input.getMouseDown(1)){
-                mouseDownR();
-            }else if (Input.getMouseUp(1)){
-                mouseUpR();
-                grabbed = false;
-            }
-        }else if (wasOver){
-            onExit();
-            wasOver = false;
-        }
 
-        if (Input.getMouseUp(0)){
-            grabbed = false;
-            grabRelease();
-        }
-
-        if (grabbed){
-            grabbed();
+            if (grabbed){
+                grabbed(eventMouse);
+            }
         }
     }
 
-    private void mouseUpR() {
+    public void mouseEnter(EventMouse eventMouse) {
 
     }
 
-    private void mouseDownR() {
+    public void hoverOver(EventMouse eventMouse){
 
     }
 
-    public void hoverOver(){
+    public void mouseDown(EventMouse eventMouse){
 
     }
 
-    public void mouseDown(){
+    public void mouseUp(EventMouse eventMouse){
 
     }
 
-    public void mouseUp(){
+    public void onExit(EventMouse eventMouse){
 
     }
 
-    public void onExit(){
+    public void mousePress(EventMouse eventMouse){
 
     }
 
-    public void mousePress(){
+    public void grabbed(EventMouse eventMouse){
 
     }
 
-    public void grabbed(){
-
-    }
-
-    public void grabRelease() {
+    public void grabRelease(EventMouse eventMouse) {
 
     }
 

@@ -4,17 +4,14 @@ package com.rugieCorp.engine.level;
 import com.rugieCorp.engine.Engine;
 import com.rugieCorp.engine.error.RugieError;
 import com.rugieCorp.engine.gameobject.Transform;
-import com.rugieCorp.engine.graphics.Window;
+import com.rugieCorp.engine.graphics.*;
 import com.rugieCorp.engine.level.tile.Tile;
 import com.rugieCorp.engine.util.ImgDecode;
 import com.rugieCorp.engine.util.ResourceLoader;
 import com.rugieCorp.engine.util.dt.Vector2f;
 import com.rugieCorp.engine.util.dt.Vector3f;
 import com.rugieCorp.engine.graphics.shader.BasicShader;
-import com.rugieCorp.engine.graphics.Material;
-import com.rugieCorp.engine.graphics.Mesh;
-import com.rugieCorp.engine.graphics.Vertex;
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 import java.awt.image.BufferedImage;
 
@@ -39,7 +36,7 @@ public class TiledLevel extends Level {
 
     public TiledLevel(String lvlName, String path) {
         super("level");
-        BufferedImage bfImg = ResourceLoader.loadTiledLevel(path);
+        BufferedImage bfImg = ResourceLoader.loadImage("level/"+path);
         init(bfImg.getWidth(),bfImg.getHeight());
 
         mapTiles = ImgDecode.getImageData(bfImg);
@@ -60,7 +57,7 @@ public class TiledLevel extends Level {
     public void render(){
 
         BasicShader.getInstance().bind();
-        BasicShader.getInstance().updateUniforms(transform, material);
+        BasicShader.getInstance().updateUniforms(transform, material, new Vector4f(0,0,0,0));
         if (mapMesh == null)
             recreateMesh();
 
@@ -69,6 +66,7 @@ public class TiledLevel extends Level {
     }
 
     private void recreateMesh(){
+        if (mapMesh != null) mapMesh.delete();
         float offsetX = Engine.getMainCamera().getOffsetX();
         float offsetY = Engine.getMainCamera().getOffsetY();
 

@@ -4,9 +4,11 @@ package com.rugieCorp.engine.graphics.shader;
 
 import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.util.dt.Matrix4f;
+import com.rugieCorp.engine.util.dt.Vector2f;
 import com.rugieCorp.engine.util.dt.Vector3f;
 import com.rugieCorp.engine.graphics.Material;
 import com.rugieCorp.engine.graphics.Util;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -41,7 +43,7 @@ public class Shader {
         glUseProgram(program);
     }
 
-    public void updateUniforms(Transform transform, Material material){
+    public void updateUniforms(Transform transform, Material material, Vector4f texPos){
 
     }
 
@@ -124,8 +126,14 @@ public class Shader {
     public void setUniformf(String uniformName, float value){
         glUniform1f(uniforms.get(uniformName), value);
     }
+    public void setUniform(String uniformName, Vector2f value){
+        glUniform2f(uniforms.get(uniformName), value.getX(), value.getY());
+    }
     public void setUniform(String uniformName, Vector3f value){
         glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ());
+    }
+    public void setUniform(String uniformName, Vector4f value){
+        glUniform4f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ(),value.getW());
     }
     public void setUniform(String uniformName, Matrix4f value){
         glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));

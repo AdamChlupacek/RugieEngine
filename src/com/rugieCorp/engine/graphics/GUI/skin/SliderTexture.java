@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.graphics.GUI.skin;
 
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.engine.graphics.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -10,35 +12,34 @@ import org.newdawn.slick.opengl.Texture;
  */
 public class SliderTexture {
 
-    private Texture texture;
+    private Vector4f bobNormal, bobHover, bobGrabbed, sliderNormal;
+    private Material material;
 
-    private float[] bobNormal, bobHover, bobGrabbed, sliderNormal;
-
-    public SliderTexture(Texture texture, float[] bobNormal, float[] bobHover, float[] bobGrabbed, float[] sliderNormal) {
-        this.texture = texture;
+    public SliderTexture(Texture texture, Vector4f bobNormal, Vector4f bobHover, Vector4f bobGrabbed, Vector4f sliderNormal) {
         this.bobNormal = bobNormal;
         this.bobHover = bobHover;
         this.bobGrabbed = bobGrabbed;
         this.sliderNormal = sliderNormal;
+        this.material = new Material(texture);
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public float[] getBobNormal() {
+    public Vector4f getBobNormal() {
         return bobNormal;
     }
 
-    public float[] getBobHover() {
+    public Vector4f getBobHover() {
         return bobHover;
     }
 
-    public float[] getBobGrabbed() {
+    public Vector4f getBobGrabbed() {
         return bobGrabbed;
     }
 
-    public float[] getSliderNormal() {
+    public Vector4f getSliderNormal() {
         return sliderNormal;
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 }

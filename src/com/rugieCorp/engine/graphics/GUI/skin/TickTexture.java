@@ -1,6 +1,7 @@
 package com.rugieCorp.engine.graphics.GUI.skin;
 
-import org.newdawn.slick.opengl.Texture;
+import com.rugieCorp.engine.graphics.Texture;
+import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
@@ -12,9 +13,9 @@ public class TickTexture {
 
     private Texture texture;
 
-    private float[] normal, hover, check;
+    private Vector4f normal, hover, check;
 
-    public TickTexture(Texture texture, float[] normal, float[] hover, float[] check) {
+    public TickTexture(Texture texture, Vector4f normal, Vector4f hover, Vector4f check) {
         this.texture = texture;
         this.normal = normal;
         this.check = check;
@@ -25,15 +26,15 @@ public class TickTexture {
         return texture;
     }
 
-    public float[] getNormal() {
+    public Vector4f getNormal() {
         return normal;
     }
 
-    public float[] getHover() {
+    public Vector4f getHover() {
         return hover;
     }
 
-    public float[] getCheck() {
+    public Vector4f getCheck() {
         return check;
     }
 }

@@ -52,11 +52,6 @@ public class CameraBoing extends GameComponent implements Camera{
     public void init(){
     }
 
-    //TODO: might bug out
-    @Override
-    public void getInput() {
-        changed = false;
-    }
 
     public void move(int x, int y){
         if (moveCheck()){

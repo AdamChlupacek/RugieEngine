@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.gameobject.component;
 
+import com.google.common.eventbus.Subscribe;
 import com.rugieCorp.engine.Input;
+import com.rugieCorp.engine.event.EventKey;
 import com.rugieCorp.engine.util.dt.Vector2f;
 import com.rugieCorp.engine.util.dt.Vector3f;
 
@@ -30,23 +32,26 @@ public class MoveController extends GameComponent {
         camera = (Camera)parent.getComponent("camera");
     }
 
-    public void getInput(){
+    @Subscribe
+    public void move(EventKey eventKey){
 
+        if (eventKey.isPress()){
 
-        if (Input.getKey(Input.KEY_D)){
-            move(1, 0);
-        }
+            if (eventKey.getKey() == Input.KEY_D){
+                move(1, 0);
+            }
 
-        if (Input.getKey(Input.KEY_A)){
-            move(-1, 0);
-        }
+            if (eventKey.getKey() == Input.KEY_A){
+                move(-1, 0);
+            }
 
-        if (Input.getKey(Input.KEY_S)){
-            move(0, -1);
-        }
+            if (eventKey.getKey() == Input.KEY_S){
+                move(0, -1);
+            }
 
-        if (Input.getKey(Input.KEY_W)){
-            move(0,1);
+            if (eventKey.getKey() == Input.KEY_W){
+                move(0,1);
+            }
         }
     }
 

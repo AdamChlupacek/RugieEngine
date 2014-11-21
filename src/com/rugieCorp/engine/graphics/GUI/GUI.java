@@ -1,6 +1,8 @@
 package com.rugieCorp.engine.graphics.GUI;
 
+import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.util.dt.Vector2f;
+import com.rugieCorp.engine.util.dt.Vector3f;
 
 /**
  * User: Adam Chlupacek
@@ -10,18 +12,14 @@ import com.rugieCorp.engine.util.dt.Vector2f;
  */
 public class GUI {
 
-    private Vector2f position;
-    private Vector2f size;
+    private Transform transform;
     private String id;
 
     public GUI(String id, Vector2f position, Vector2f size) {
-        this.position = position;
-        this.size = size;
+        this.transform = new Transform();
+        this.transform.setTranslation(position.getX(), position.getY(), 0);
+        this.transform.setScale(size.getX(),size.getY(),0);
         this.id = id;
-    }
-
-    public void getInput(){
-
     }
 
     public void update(){
@@ -32,26 +30,31 @@ public class GUI {
 
     }
 
-    public Vector2f getPosition() {
-        return position;
+    public Vector3f getPosition() {
+        return transform.getPos();
     }
 
     public void setPosition(Vector2f position) {
-        this.position = position;
+        this.transform.setTranslation(position.getX(),position.getY(),0);
     }
 
-    public Vector2f getSize() {
-        return size;
+    public Vector3f getScale() {
+        return transform.getScale();
     }
 
-    public void setSize(Vector2f size) {
-        this.size = size;
+    public void setScale(Vector2f size) {
+        this.transform.setScale(size.getX(),size.getY(),0);
     }
 
     public String getId() {
         return id;
     }
 
+    public Transform getTransform() {
+        return transform;
+    }
+
+    //Cheat method, to get reference to this object from inner classes and inner class implementations.
     protected GUI getThis(){
         return this;
     }

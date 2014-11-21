@@ -12,7 +12,6 @@ import java.awt.image.DataBufferInt;
  */
 public class ImgDecode {
 
-    //TODO: some sensible name please?
     public static Integer[] getImageData(BufferedImage image) {
 
         final byte[] pixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();

@@ -2,39 +2,37 @@ package com.rugieCorp.engine.graphics.shader;
 
 import com.rugieCorp.engine.Engine;
 import com.rugieCorp.engine.gameobject.Transform;
-import com.rugieCorp.engine.util.dt.Matrix4f;
 import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.engine.util.dt.Matrix4f;
 import com.rugieCorp.engine.util.dt.Vector4f;
 
 /**
  * User: Adam Chlupacek
- * Date: 05/05/14
- * Time: 00:47
- * Package: com.rugieCorp.test
+ * Date: 06/05/14
+ * Time: 12:26
+ * Package: com.rugieCorp.engine.graphics.shader
  */
-public class FontShader extends Shader {
+public class GUIShader extends Shader {
 
-    private static final FontShader instance = new FontShader();
+    private static final GUIShader instance = new GUIShader();
 
-    public static FontShader getInstance(){
+    public static GUIShader getInstance(){
         return instance;
     }
 
-    public FontShader() {
+    public GUIShader() {
         super();
 
-
-        addVertexShaderFromFile("Font-Vertex.vrs");
-        addFragmentShaderFromFile("Font-Fragment.frs");
-
-        compileShader();
+        addVertexShaderFromFile("GUI-Vertex.vrs");
+        addFragmentShaderFromFile("GUI-Fragment.frs");
 
         addUniform("transform");
         addUniform("color");
+        addUniform("textPos");
     }
 
-
-    public void updateUniforms(Transform transform, Material material,Vector4f texPos){
+    @Override
+    public void updateUniforms(Transform transform, Material material, Vector4f texPos) {
 
         Matrix4f worldMatrix = transform.getTransformation();
         Matrix4f projectedMatrix = Engine.getMainCamera().getViewProjection().mul(worldMatrix);
@@ -43,5 +41,6 @@ public class FontShader extends Shader {
 
         setUniform("transform", projectedMatrix);
         setUniform("color", material.getColor());
+        setUniform("texPos",texPos);
     }
 }

@@ -1,5 +1,6 @@
 package com.rugieCorp.engine.graphics.GUI;
 
+import com.rugieCorp.engine.event.EventMouse;
 import com.rugieCorp.engine.graphics.GUI.skin.Skin;
 import com.rugieCorp.engine.graphics.GUI.skin.TickTexture;
 import com.rugieCorp.engine.util.dt.Vector2f;
@@ -17,7 +18,6 @@ public class GUITick extends GUIPressAble {
 
     private boolean checked;
     private String content;
-
 
 
     private TickTexture tickTexture;
@@ -51,17 +51,17 @@ public class GUITick extends GUIPressAble {
     }
 
     @Override
-    public void onExit() {
+    public void onExit(EventMouse eventMouse) {
 //        square.setTextureCoor(tickTexture.getNormal());
     }
 
     @Override
-    public void hoverOver() {
+    public void hoverOver(EventMouse eventMouse) {
 //        square.setTextureCoor(tickTexture.getHover());
     }
 
     @Override
-    public void mouseUp() {
+    public void mouseUp(EventMouse eventMouse) {
         checked = !checked;
     }
 }

@@ -5,9 +5,11 @@ import com.rugieCorp.engine.gameobject.Transform;
 import com.rugieCorp.engine.graphics.Material;
 import com.rugieCorp.engine.graphics.Mesh;
 import com.rugieCorp.engine.graphics.Vertex;
+import com.rugieCorp.engine.graphics.shader.BasicShader;
 import com.rugieCorp.engine.graphics.shader.FontShader;
 import com.rugieCorp.engine.util.dt.Vector2f;
 import com.rugieCorp.engine.util.dt.Vector3f;
+import com.rugieCorp.engine.util.dt.Vector4f;
 import org.lwjgl.opengl.Display;
 
 
@@ -28,10 +30,10 @@ public class FontText {
 
     public FontText(BitmapFont font, int size) {
         this.font = font;
-        this.size = size;
+        this.size = font.getSize();
 
         this.transform = new Transform();
-        this.transform.setScale((float)size/ Display.getWidth(),(float)size/Display.getHeight(),0);
+        this.transform.setScale((float)size,(float)size,0);
         text = "place holder";
     }
 
@@ -74,9 +76,12 @@ public class FontText {
 
     public void draw(float x, float y){
         transform.setTranslation(x,y,0);
-        FontShader.getInstance().bind();
-        FontShader.getInstance().updateUniforms(transform,new Material(font.getTexture(),new Vector3f(1,1,1)));
-
+        BasicShader.getInstance().bind();
+        BasicShader.getInstance().updateUniforms(transform, new Material(font.getTexture()), new Vector4f(0, 0, 0, 0));
         mesh.draw();
+    }
+
+    public void setSize(int size) {
+        this.transform.setScale(size,size,0);
     }
 }

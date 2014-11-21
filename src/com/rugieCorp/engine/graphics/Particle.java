@@ -2,7 +2,7 @@ package com.rugieCorp.engine.graphics;
 
 import com.rugieCorp.engine.util.Delay;
 import com.rugieCorp.engine.util.dt.Vector2f;
-import org.newdawn.slick.opengl.Texture;
+
 
 /**
  * User: Adam Chlupacek

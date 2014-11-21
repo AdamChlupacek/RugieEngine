@@ -1,5 +1,7 @@
 package com.rugieCorp.engine;
 
+import com.google.common.eventbus.EventBus;
+import com.rugieCorp.engine.event.*;
 import com.rugieCorp.engine.util.dt.Vector2f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -12,8 +14,7 @@ import org.lwjgl.input.Mouse;
  */
 public class Input {
 
-    public static boolean record = false;
-    public static boolean mouseDownTaken = false;
+    public static EventBus inputBus = new EventBus("inputBus");
 
     public static final int NUM_KEYCODES = 256;
     public static final int NUM_MOUSEBUTTONS = 3;
@@ -162,66 +163,52 @@ public class Input {
 
     public static void update()
     {
-        for(int i = 0; i < NUM_KEYCODES; i++)
+        for(int i = 0; i < NUM_KEYCODES; i++){
+            if (getKey(i) || getKeyDown(i) || getKeyUp(i))
+                inputBus.post(new EventKey(i,getKey(i),getKeyDown(i),getKeyUp(i)));
             lastKeys[i] = getKey(i);
-
-        for(int i = 0; i < NUM_MOUSEBUTTONS; i++)
-            lastMouse[i] = getMouse(i);
-
-        if (!record){
-            Keyboard.next();
         }
-        //TODO: change it a bit?
-        mouseDownTaken = false;
 
-        Mouse.getEventButton();
+        for(int i = 0; i < NUM_MOUSEBUTTONS; i++){
+            if (getMouse(i) || getMouseDown(i) || getMouseUp(i))
+                inputBus.post(new EventMouse(i,getMouse(i),getMouseUp(i),getMouseDown(i),getMousePosition()));
+            lastMouse[i] = getMouse(i);
+        }
+
     }
 
-    public static boolean getKey(int keyCode)
+    private static boolean getKey(int keyCode)
     {
         return Keyboard.isKeyDown(keyCode);
     }
 
-    public static boolean getKeyDown(int keyCode)
+    private static boolean getKeyDown(int keyCode)
     {
         return getKey(keyCode) && !lastKeys[keyCode];
     }
 
-    public static boolean getKeyUp(int keyCode)
+    private static boolean getKeyUp(int keyCode)
     {
         return !getKey(keyCode) && lastKeys[keyCode];
     }
 
-    public static boolean getMouse(int mouseButton)
+    private static boolean getMouse(int mouseButton)
     {
         return Mouse.isButtonDown(mouseButton);
     }
 
-    public static boolean getMouseDown(int mouseButton)
+    private static boolean getMouseDown(int mouseButton)
     {
         return getMouse(mouseButton) && !lastMouse[mouseButton];
     }
 
-    public static boolean getMouseUp(int mouseButton)
+    private static boolean getMouseUp(int mouseButton)
     {
         return !getMouse(mouseButton) && lastMouse[mouseButton];
     }
 
-    public static Vector2f getMousePosition()
+    private static Vector2f getMousePosition()
     {
         return new Vector2f(Mouse.getX(), Mouse.getY());
-    }
-
-    public static Character getKeyPressed(){
-        Character temp = null ;
-        while (Keyboard.next()){
-            if (Keyboard.getEventKeyState()){
-                temp = Keyboard.getEventCharacter();
-            }
-        }
-        if (temp !=null && (int)temp == 0 ){
-            temp = null;
-        }
-        return temp;
     }
 }
