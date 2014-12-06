@@ -8,6 +8,7 @@ import com.rugieCorp.engine.gameobject.GameObject;
  * Time: 13:09
  * Package: com.rugieCorp.engine.gameobject.component
  */
+@Deprecated
 public interface Collider {
 
     public static final int BOTTOM = 0;

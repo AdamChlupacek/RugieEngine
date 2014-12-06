@@ -8,15 +8,39 @@ import com.rugieCorp.engine.util.dt.Matrix4f;
  * Time: 00:38
  * Package: com.rugieCorp.engine.gameobject.component
  */
+
+/**
+ * An interface for camera
+ */
 public interface Camera {
 
-    public void move(int x, int y);
+  /**
+   * Moving camera
+   * @param x move by in x direction
+   * @param y move by in y direction
+   */
+  public void move(int x, int y);
 
-    public float getOffsetX();
+  /**
+   * Getter for the position of camera in x direction
+   * @return x direction
+   */
+  public float getOffsetX();
 
-    public float getOffsetY();
+  /**
+   * Getter for the position of camera in y direction
+   * @return y direction
+   */
+  public float getOffsetY();
 
-    public Matrix4f getViewProjection();
+  /**
+   * Projection view (frustum) for the camera,
+   * @return projection view of the camera
+   */
+  public Matrix4f getViewProjection();
 
-    public boolean changed();
+  /**
+   * If the camera changed its position
+   */
+  public boolean changed();
 }

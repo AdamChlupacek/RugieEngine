@@ -12,6 +12,7 @@ import com.rugieCorp.engine.level.tile.Tile;
  * Time: 13:28
  * Package: com.rugieCorp.engine.gameobject.component
  */
+@Deprecated
 public class ColliderSquare extends GameComponent implements Collider {
 
     private float sx, sy;

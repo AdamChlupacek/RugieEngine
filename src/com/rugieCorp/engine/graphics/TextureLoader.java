@@ -2,6 +2,8 @@ package com.rugieCorp.engine.graphics;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import org.lwjgl.BufferUtils;
@@ -11,8 +13,22 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextureLoader {
 
+  //Storage for loaded textures
+  private static Map<String, Texture> textures = new HashMap<>();
+
   private static final int BYTES_PER_PIXEL = 4;//3 for RGB, 4 for RGBA
-  public static Texture loadTexture(BufferedImage image){
+
+  /**
+   * Creates a 2D texture for openGL from BufferedImage
+   * @param image the BufferedImage to be used for the texture
+   * @param name name under which will the texture be known
+   * @return returns a texture
+   */
+  public static Texture loadTexture(BufferedImage image, String name){
+
+    if (textures.containsKey(name)){
+      return  textures.get(name);
+    }
 
     int[] pixels = new int[image.getWidth() * image.getHeight()];
     image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -50,6 +66,10 @@ public class TextureLoader {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
     //Return the texture ID so we can bind it later again
-    return new Texture(textureID);
+    Texture temp = new Texture(textureID);
+    //Stores the texture under a key for easier loading in the future;
+    textures.put(name,temp);
+
+    return temp;
   }
 }

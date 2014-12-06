@@ -29,135 +29,134 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class GUIDialog extends GUIPressAble {
 
-    private static GUIDialog lastDialog;
+  private static GUIDialog lastDialog;
 
-    private EventBus childBus;
+  private EventBus childBus;
 
-    private float topBarHeight;
-    private Vector2f pressPosition;
+  private float topBarHeight;
+  private Vector2f pressPosition;
 
-    private List<GUI> children;
+  private List<GUI> children;
 
-    private boolean drag;
-    private boolean active;
+  private boolean drag;
+  private boolean active;
 
-    private Transform topTransform;
-    private Material material = new Material(ResourceLoader.loadTexture("texture/baseTex"));
-    public GUIDialog(String id, Vector2f position, Vector2f size, Skin skin) {
-        super(id, position, size);
-        this.children = new ArrayList<GUI>();
-        this.childBus = new EventBus(getId() +":ChildBus");
-        this.topBarHeight = 30;
-        this.drag = false;
+  private Transform topTransform;
 
-        this.topTransform = new Transform();
-        this.topTransform.setPos(getPosition().add(new Vector3f(0,getScale().getY()-topBarHeight,0)));
-        this.topTransform.setScale(getScale().getX(), topBarHeight, 0);
-        //TODO: skin implementation
+  private Material material = new Material(ResourceLoader.loadTexture("texture/baseTex"));
 
-        active = false;
+  public GUIDialog(String id, Vector2f position, Vector2f size, Skin skin) {
+    super(id, position, size);
+    this.children = new ArrayList<GUI>();
+    this.childBus = new EventBus(getId() +":ChildBus");
+    this.topBarHeight = 30;
+    this.drag = false;
 
-        GUIButton close = new GUIButton(getId() +":Close","",new Vector2f(getPosition().getX() + 5 ,getPosition().getY() + getScale().getY() - 15),new Vector2f(10,10),skin);
+    this.topTransform = new Transform();
+    this.topTransform.setPos(getPosition().add(new Vector3f(0,getScale().getY()-topBarHeight,0)));
+    this.topTransform.setScale(getScale().getX(), topBarHeight, 0);
+    //TODO: skin implementation
 
-        close.setAction(new Action() {
-            @Override
-            public void go() {
-                Engine.getScreen().removeGUI(getThis());
-                System.out.println("Pressed");
-            }
-        });
+    active = false;
 
-        this.addChild(close);
+    GUIButton close = new GUIButton(getId() +":Close","",new Vector2f(getPosition().getX() + 5 ,getPosition().getY() + getScale().getY() - 15),new Vector2f(10,10),skin);
 
+    close.setAction(new Action() {
+      @Override
+      public void go() {
+        Engine.getScreen().removeGUI(getThis());
+        System.out.println("Pressed");
+      }
+    });
+
+    this.addChild(close);
+
+  }
+
+  @Subscribe
+  public void childrenInput(EventInput eventInput) {
+    if (active)
+      if (eventInput instanceof EventMouse)
+        childBus.post(eventInput);
+  }
+
+  @Override
+  public void update() {
+    super.update();
+    for (GUI child:children){
+      child.update();
+    }
+  }
+
+  @Override
+  public void render(){
+
+    Transform adjustT = getTransform().copy();
+    adjustT.setScale(getScale().getX(),getScale().getY() - topBarHeight,0);
+    SpriteVSShader.getInstance().bind();
+    SpriteVSShader.getInstance().updateUniforms(adjustT, material,new Vector4f(0,0,1,1));
+    MeshManager.squareMesh.draw();
+
+    SpriteVSShader.getInstance().bind();
+    SpriteVSShader.getInstance().updateUniforms(topTransform, material,new Vector4f(0,0,1,1));
+    MeshManager.squareMesh.draw();
+
+
+    for (GUI child:children){
+      child.render();
+    }
+  }
+
+  @Override
+  public void mouseDown(EventMouse eventMouse) {
+    if (eventMouse.getPosition().getY() > getPosition().getY() + getScale().getY() - topBarHeight){
+      drag = true;
+      pressPosition = eventMouse.getPosition().sub(getPosition().getXY());
     }
 
-    @Subscribe
-    public void childrenInput(EventInput eventInput) {
-        if (active)
-            if (eventInput instanceof EventMouse)
-                childBus.post(eventInput);
+    if (active){
+      eventMouse.setGUIMouseTaken(true);
     }
 
-    @Override
-    public void update() {
+    if (!eventMouse.isGUIMouseTaken()){
+      Engine.getScreen().setLast(this);
 
-        for (GUI child:children){
-            child.update();
-        }
+      Engine.getScreen().getGUILayer().stream().filter(gui -> gui instanceof GUIDialog).forEach(gui -> ((GUIDialog) gui).setActive(false));
+
+      active = true;
+      lastDialog = this;
     }
 
-    @Override
-    public void render(){
+  }
 
-        Transform adjustT = getTransform().copy();
-        adjustT.setScale(getScale().getX(),getScale().getY() - topBarHeight,0);
-        SpriteVSShader.getInstance().bind();
-        SpriteVSShader.getInstance().updateUniforms(adjustT, material,new Vector4f(0,0,1,1));
-        MeshManager.squareMesh.draw();
-
-        SpriteVSShader.getInstance().bind();
-        SpriteVSShader.getInstance().updateUniforms(topTransform, material,new Vector4f(0,0,1,1));
-        MeshManager.squareMesh.draw();
-
-
-        for (GUI child:children){
-            child.render();
-        }
+  @Override
+  public void grabbed(EventMouse eventMouse) {
+    if (drag && active){
+      Vector2f posDifference = eventMouse.getPosition().sub(pressPosition);
+      movePosChildren(posDifference);
+      setPosition(posDifference);
+      this.topTransform.setPos(getPosition().add(new Vector3f(0,getScale().getY()-topBarHeight,0)));
+      pressPosition = eventMouse.getPosition().sub(getPosition().getXY());
     }
+  }
 
-    @Override
-    public void mouseDown(EventMouse eventMouse) {
-        if (eventMouse.getPosition().getY() > getPosition().getY() + getScale().getY() - topBarHeight){
-            drag = true;
-            pressPosition = eventMouse.getPosition().sub(getPosition().getXY());
-        }
+  @Override
+  public void grabRelease(EventMouse eventMouse) {
+    drag = false;
+  }
 
-        if (active){
-            eventMouse.setGUIMouseTaken(true);
-        }
-
-        if (!eventMouse.isGUIMouseTaken()){
-            Engine.getScreen().setLast(this);
-
-            for (GUI gui: Engine.getScreen().getGUILayer()){
-                if (gui instanceof GUIDialog)
-                    ((GUIDialog) gui).setActive(false);
-            }
-
-            active = true;
-            lastDialog = this;
-        }
-
+  private void movePosChildren(Vector2f vector2f){
+    for (GUI child:children){
+      child.setPosition(vector2f.add(child.getPosition().sub(getPosition()).getXY()));
     }
+  }
 
-    @Override
-    public void grabbed(EventMouse eventMouse) {
-        if (drag && active){
-            Vector2f posDifference = eventMouse.getPosition().sub(pressPosition);
-            movePosChildren(posDifference);
-            setPosition(posDifference);
-            this.topTransform.setPos(getPosition().add(new Vector3f(0,getScale().getY()-topBarHeight,0)));
-            pressPosition = eventMouse.getPosition().sub(getPosition().getXY());
-        }
-    }
+  public void addChild(GUI gui){
+    children.add(gui);
+    childBus.register(gui);
+  }
 
-    @Override
-    public void grabRelease(EventMouse eventMouse) {
-        drag = false;
-    }
-
-    private void movePosChildren(Vector2f vector2f){
-        for (GUI child:children){
-            child.setPosition(vector2f.add(child.getPosition().sub(getPosition()).getXY()));
-        }
-    }
-
-    public void addChild(GUI gui){
-        children.add(gui);
-        childBus.register(gui);
-    }
-
-    public void setActive(boolean active){
-        this.active = active;
-    }
+  public void setActive(boolean active){
+    this.active = active;
+  }
 }

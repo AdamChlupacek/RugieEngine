@@ -32,6 +32,10 @@ public class MoveController extends GameComponent {
         camera = (Camera)parent.getComponent("camera");
     }
 
+  /**
+   * Check for move
+   * @param eventKey
+   */
     @Subscribe
     public void move(EventKey eventKey){
 

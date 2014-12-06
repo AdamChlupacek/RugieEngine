@@ -17,7 +17,11 @@ import java.io.IOException;
  */
 public class ResourceLoader {
 
-
+  /**
+   * Load a buffered image from a .png file
+   * @param path path to the file, relative to "res/" folder
+   * @return the loaded buffered image;
+   */
     public static BufferedImage loadImage(String path){
         try {
             return ImageIO.read(new FileInputStream("res/" + path + ".png"));
@@ -27,11 +31,13 @@ public class ResourceLoader {
         return null;
     }
 
-
+  /**
+   * Creates a texture from .png file at give path
+   * @param path path to the file, relative to "res/" folder
+   * @return Texture made from the .png file
+   */
     public static Texture loadTexture(String path){
-      return TextureLoader.loadTexture(loadImage(path));
+      return TextureLoader.loadTexture(loadImage(path), path);
     }
-
-
 
 }

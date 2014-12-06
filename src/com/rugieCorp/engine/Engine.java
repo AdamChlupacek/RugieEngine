@@ -1,5 +1,6 @@
 package com.rugieCorp.engine;
 
+import com.google.common.eventbus.EventBus;
 import com.rugieCorp.engine.gameobject.component.Camera;
 import com.rugieCorp.engine.graphics.MeshManager;
 import com.rugieCorp.engine.graphics.Screen;
@@ -17,110 +18,154 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Engine {
 
-    private static Screen screen;
+  //The current screen that is being displayed
+  private static Screen screen;
 
-    private boolean running = false;
-    private double frameTime;
-    private static Camera mainCamera;
+  //Running flag
+  private boolean running = false;
 
-    public Engine(String title, int fps) {
-        Window.createDisplay();
-        Window.setTitle(title);
-        this.frameTime = (float)1/fps;
+  //Delta time of one frame
+  private double frameTime;
 
-        screen = new Screen();
+  //Current Camera that is used to display scene to user
+  private static Camera mainCamera;
 
-        MeshManager.createMeshes();
-        FontLoader.populateFonts();
-    }
-
-    public static Camera getMainCamera() {
-        return mainCamera;
-    }
-
-    public void start(){
-        running = true;
-
-        run();
-    }
-
-    public void stop(){
-        running = false;
-    }
-
-    private void run(){
-        int frames = 0;
-        double frameCounter = 0;
-
-        double lastTime = Time.getTime();
-        double unprocessedTime = 0;
+  //Main event bus
+  private static EventBus mainBus;
 
 
-        while (running){
+  /**
+   * Creates engine with all necessary components. Including a blank screen
+   * @param title the title to be displayed at the top of the screen
+   * @param fps desired fps lock of the app
+   */
+  public Engine(String title, int fps) {
+    Window.createDisplay();
+    Window.setTitle(title);
+    this.frameTime = (float)1/fps;
 
-            boolean render = false;
+    screen = new Screen();
+    mainBus = new EventBus();
 
-            double startTime = Time.getTime();
-            double passedTime = startTime - lastTime;
-            lastTime = startTime;
+    MeshManager.createMeshes();
+    FontLoader.populateFonts();
+  }
 
-            unprocessedTime += passedTime;
-            frameCounter += passedTime;
+  /**
+   * Getter for the main camera,
+   * Can be NULL at start!
+   * @return main camera
+   */
+  public static Camera getMainCamera() {
+    return mainCamera;
+  }
 
-            while (unprocessedTime > frameTime){
+  /**
+   * Starts the engine
+   */
+  public void start(){
+    running = true;
+    run();
+  }
 
-                render = true;
+  /**
+   * Stops the engine
+   */
+  public void stop(){
+    running = false;
+  }
 
-                unprocessedTime -= frameTime;
+  /**
+   * Run method of the engine, including the main loop
+   */
+  private void run(){
+    int frames = 0;
+    double frameCounter = 0;
 
-                if (Window.isCloseRequested())
-                    stop();
+    double lastTime = Time.getTime();
+    double unprocessedTime = 0;
 
-                Input.update();
 
-                screen.update((float)frameTime);
+    while (running){
 
-                if (frameCounter >= 1.0){
-                    System.out.println("FPS: " + frames);
-                    frames = 0;
-                    frameCounter = 0;
-                }
-            }
+      boolean render = false;
 
-            if (render){
-                glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
-//                glLoadIdentity();
-                screen.render();
-                Window.render();
-                frames++;
-            }else {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+      double startTime = Time.getTime();
+      double passedTime = startTime - lastTime;
+      lastTime = startTime;
+
+      unprocessedTime += passedTime;
+      frameCounter += passedTime;
+
+      while (unprocessedTime > frameTime){
+
+        render = true;
+
+        unprocessedTime -= frameTime;
+
+        if (Window.isCloseRequested())
+          stop();
+
+        Input.update();
+
+        screen.update((float)frameTime);
+
+        if (frameCounter >= 1.0){
+          System.out.println("FPS: " + frames);
+          frames = 0;
+          frameCounter = 0;
         }
+      }
 
-        cleanUp();
+      if (render){
+        glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+//                glLoadIdentity();
+        screen.render();
+        Window.render();
+        frames++;
+      }else {
+        try {
+          Thread.sleep(1);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
     }
 
-    private void cleanUp(){
-        Window.dispose();
-    }
+    cleanUp();
+  }
 
-    public static Screen getScreen(){
-        return screen;
-    }
+  /**
+   * Disposing of all loaded resources, not to hog any memory space
+   */
+  private void cleanUp(){
+    Window.dispose();
+  }
 
-    public static void setScreen(Screen screen) {
-        Engine.screen.dispose();
-        Engine.screen = screen;
-        Engine.screen.getRoot().updateDepsAll();
-    }
+  /**
+   * Getter for current screen
+   * @return current screen
+   */
+  public static Screen getScreen(){
+    return screen;
+  }
 
-    public static void setMainCamera(Camera mainCamera) {
-        Engine.mainCamera = mainCamera;
-    }
+  /**
+   * Setter for current screen
+   * @param screen screen to be set as current;
+   */
+  public static void setScreen(Screen screen) {
+    Engine.screen.dispose();
+    Engine.screen = screen;
+    Engine.screen.getRoot().updateDepsAll();
+  }
+
+  /**
+   * Setter for main camera
+   * @param mainCamera camera to be used as main camera
+   */
+  public static void setMainCamera(Camera mainCamera) {
+    Engine.mainCamera = mainCamera;
+  }
 }

@@ -12,6 +12,7 @@ import com.rugieCorp.engine.util.dt.Vector4f;
  * Time: 12:26
  * Package: com.rugieCorp.engine.graphics.shader
  */
+@Deprecated
 public class GUIShader extends Shader {
 
     private static final GUIShader instance = new GUIShader();

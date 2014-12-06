@@ -148,5 +148,8 @@ public class Vector3f {
         return true;
     }
 
-
+  @Override
+  public String toString() {
+    return "[VECTOR3]: X: " + getX() + " Y: " + getY() + " Z: " + getZ();
+  }
 }

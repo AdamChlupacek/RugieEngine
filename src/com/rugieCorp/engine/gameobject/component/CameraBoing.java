@@ -11,71 +11,73 @@ import com.rugieCorp.engine.util.dt.Vector3f;
  * Time: 22:11
  * Package: com.rugieCorp.worldRPG
  */
+
+/**
+ * An implementation of camera into a game component,
+ * This camera works with limits, ie it wont move unless the game object that it is bound to reaches certain threshold
+ */
 public class CameraBoing extends GameComponent implements Camera{
 
-    private int bound = 200;
+  //bounds from the screen at which camera starts to move
+  private int bound = 200;
 
-    private Vector3f pos;
-    private Vector3f forward;
-    private Vector3f up;
+  private Vector3f pos;
+  private Vector3f forward;
+  private Vector3f up;
 
-    private Matrix4f projection;
+  private Matrix4f projection;
 
-    private boolean changed;
+  private boolean changed;
 
-    public CameraBoing(float left, float right, float bottom, float top, float near, float far) {
-        super("camera");
+  public CameraBoing(float left, float right, float bottom, float top, float near, float far) {
+    super("camera");
 
-        this.changed = false;
+    this.changed = false;
 
-        this.pos = new Vector3f(-300,-300,0);
-        this.forward = new Vector3f(0,0,1).normalize();
-        this.up = new Vector3f(0,1,0).normalize();
+    this.pos = new Vector3f(-300,-300,0);
+    this.forward = new Vector3f(0,0,1).normalize();
+    this.up = new Vector3f(0,1,0).normalize();
 
-        projection = new Matrix4f().initOrthographic(left, right, bottom, top, near, far);
+    projection = new Matrix4f().initOrthographic(left, right, bottom, top, near, far);
+  }
+
+  @Override
+  public Matrix4f getViewProjection(){
+    Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+    Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+
+    return projection.mul(cameraRotation.mul(cameraTranslation));
+  }
+
+  @Override
+  public boolean changed() {
+    return changed;
+  }
+
+  public void move(int x, int y){
+    if (moveCheck()){
+      pos = pos.add(new Vector3f(x,y,0));
+      changed = true;
+    }else {
+      //changed = false;
     }
+  }
 
-    @Override
-    public Matrix4f getViewProjection(){
-        Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
-        Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+  private boolean moveCheck(){
+    if (parent.getPosition().getX() < pos.getX() + bound) return true;
+    if (parent.getPosition().getX() + parent.getScale().getX() > pos.getX() + Window.getWidth() - bound) return true;
+    if (parent.getPosition().getY() < pos.getY() + bound) return true;
+    if (parent.getPosition().getY() + parent.getScale().getY()  > pos.getY() + Window.getHeight() - bound) return true;
 
-        return projection.mul(cameraRotation.mul(cameraTranslation));
-    }
+    return false;
+  }
 
-    @Override
-    public boolean changed() {
-        return changed;
-    }
+  public float getOffsetX() {
+    return pos.getX();
+  }
 
-    @Override
-    public void init(){
-    }
-
-
-    public void move(int x, int y){
-        if (moveCheck()){
-            pos = pos.add(new Vector3f(x,y,0));
-            changed = true;
-        }
-    }
-
-    private boolean moveCheck(){
-
-        if (parent.getPosition().getX() < pos.getX() + bound) return true;
-        if (parent.getPosition().getX() + parent.getScale().getX() > pos.getX() + Window.getWidth() - bound) return true;
-        if (parent.getPosition().getY() < pos.getY() + bound) return true;
-        if (parent.getPosition().getY() + parent.getScale().getY()  > pos.getY() + Window.getHeight() - bound) return true;
-
-        return false;
-    }
-
-    public float getOffsetX() {
-        return pos.getX();
-    }
-
-    public float getOffsetY() {
-        return pos.getY();
-    }
+  public float getOffsetY() {
+    return pos.getY();
+  }
 
 }

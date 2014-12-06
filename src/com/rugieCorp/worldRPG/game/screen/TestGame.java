@@ -11,6 +11,7 @@ import com.rugieCorp.engine.level.TiledLevel;
 import com.rugieCorp.engine.util.ResourceLoader;
 import com.rugieCorp.engine.util.dt.Vector3f;
 import com.rugieCorp.engine.graphics.Material;
+import com.rugieCorp.worldRPG.game.components.StatComponent;
 
 /**
  * User: Adam Chlupacek
@@ -32,11 +33,12 @@ public class TestGame extends Screen {
 
         GameObject player = new GameObject("player");
         player.setScale(new Vector3f(64, 64 ,0));
-        player.setPosition(new Vector3f(70,70,0));
-        player.addComponent(new CameraBoing(0,1280,0,800,1,-1));
+        player.setPosition(new Vector3f(70, 70, 0));
+        player.addComponent(new CameraBoing(0, 1280, 0, 800, 1, -1));
         player.addComponent(new MoveController(1));
         player.addComponent(new ColliderSquare());
         player.addComponent(new RectangleRender(material));
+        player.addComponent(new StatComponent("playerHealt",true));
 
         Engine.setMainCamera((CameraBoing)player.getComponent("camera"));
 

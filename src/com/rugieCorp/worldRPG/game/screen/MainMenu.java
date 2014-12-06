@@ -105,8 +105,10 @@ public class MainMenu extends Screen {
 
 
         GUIDialog dialog = new GUIDialog("dialog", new Vector2f(100,300),new Vector2f(300,200),skin);
-        GUILabel testlabel = new GUILabel("testlabel",new Vector2f(100,350),new Vector2f(200,30),"YOLO for ever");
+        GUILabel testlabel = new GUILabel("testlabel",new Vector2f(100,450),new Vector2f(200,30),"YOLO for ever");
+        GUIButton dialogBut1 = new GUIButton("dialogbutton1","Test button",new Vector2f(100,350),new Vector2f(200,30),skin);
         dialog.addChild(testlabel);
+        dialog.addChild(dialogBut1);
 
         addGUI(dialog);
 
